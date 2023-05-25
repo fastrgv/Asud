@@ -1,6 +1,11 @@
 
 # ASUD: Ada Sudoku Assistant
 
+Use the following link to download the latest release, including source code:
+
+https://github.com/fastrgv/Asud/releases/download/v1.0.0/asud.7z
+
+
 -----------------------------------------------------------------
 
 ### First, some terminology:
