@@ -1,6 +1,9 @@
 
 ![screenshot](https://github.com/fastrgv/Asud/blob/main/menu.png)
+Menu
+
 ![screenshot](https://github.com/fastrgv/Asud/blob/main/l-pairs3.png)
+Linked-Pairs
 
 # ASUD: Ada Sudoku Assistant
 
