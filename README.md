@@ -1,4 +1,7 @@
 
+![screenshot](https://github.com/fastrgv/Asud/blob/main/menu.png)
+
+
 # ASUD: Ada Sudoku Assistant
 
 Use the following link to download the latest release, including source code:
