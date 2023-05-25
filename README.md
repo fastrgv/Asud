@@ -7,7 +7,7 @@ Linked-Pairs Screen
 
 # ASUD: Ada Sudoku Assistant
 
-Click on the most recent large 7z file under Releases of
+Click on the most recent large 7z file under Releases or
 Use the following link to download the latest release, including source code:
 
 https://github.com/fastrgv/Asud/releases/download/v1.0.0/asud.7z
