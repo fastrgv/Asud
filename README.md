@@ -6,6 +6,11 @@ Menu Screen
 Linked-Pairs Screen
 
 
+![screenshot](https://github.com/fastrgv/Asud/blob/main/badKeycell.png)
+Bad Key Cell Screen
+
+
+
 # ASUD: Ada Sudoku Assistant
 
 Here is the link for the latest release (Windows & Linux) including all source code:
