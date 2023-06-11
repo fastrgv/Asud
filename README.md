@@ -6,8 +6,9 @@ Menu Screen
 Linked-Pairs Screen
 
 
-![screenshot](https://github.com/fastrgv/Asud/blob/main/badKeycell.png)
+![screenshot](https://github.com/fastrgv/Asud/blob/main/badKeyCell.png)
 Bad Key Cell Screen
+
 
 Here is the link to the latest release, which includes all source:
 
