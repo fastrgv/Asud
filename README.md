@@ -15,10 +15,16 @@ Here is the link to the latest release, which includes all source:
 https://github.com/fastrgv/Asud/releases/download/v1.0.2/sud12jun23.7z
 
 
+
 # ASUD: Ada Sudoku Assistant
 
 
 ## Most recent changes
+
+**ver 1.0.3 -- 17jun2023**
+
+* Fully expanded Key-Cell test (k-key) to allow selecting any cell.
+
 
 **ver 1.0.2 -- 12jun2023**
 
@@ -141,7 +147,7 @@ Notes:
 * Linked-Pairs (l-key): each digit might have multiple chains that are cycled thru in order;
 	(you can make a quick exit by pressing a different view-toggle key).
 * If a bad [contradictory] Xcycle is found, the first/last digits are CYAN, the other digits involved are green.
-* Key-Cell test (k-key), for a cell with only 2 or 3 candidates, shows one in RED if it leads to logical contradiction. Also shows consequences of the RED digit by showing the resulting singles in GREEN and the resulting empty cells in a BLUE outline.
+* Key-Cell test (k-key), for any selected cell, shows one candidate digit in RED if it leads to logical contradiction. Also shows consequences of the RED digit by showing the resulting singles in GREEN and the resulting empty cells in a BLUE outline.
 * Digit-Doubles (d-key) shows houses with 2 aligned digits.
 
 --------------------------------------------
@@ -179,7 +185,7 @@ Windows users type:  "wsud.bat {fnam}" or "binw64\sud.exe {fnam}"
  
 ----------------------------------------------------------------------
 
-## Input Files (normal sudoku):
+## Input Files:
 
 * If no commandline parameters are passed to the executable, then the previously saved puzzle is restored.
 
@@ -278,13 +284,12 @@ There exists very difficult ones that require advanced methods and insights.
 -----------------------------------------------------------------------------------------------------
 
 ### Key-Cell-View
-If you have reduced the candidates as much as possible, then you likely have many cells
-with only 2 or 3 candidates. For such cells
-you can select the cell with the mouse, then use the k-key. This, last-resort
-**Key-Cell** test searches the ramifications of selecting each digit, which might lead to 
-a logical contradiction. If so, the digit is shown in RED, indicating it should be removed.
+If you have reduced the candidates as much as possible with other methods, but still
+need help, you can select any cell with the mouse, then use the k-key. This, last-resort
+**Key-Cell** test searches the ramifications of selecting each digit in the cell, which might lead
+to a logical contradiction. If so, the digit is shown in RED, indicating it should be removed.
 A contradiction appears in the form of a cell that would become empty outlined in blue.
-The logic for that contradiction appears in the console-terminal window.
+The logic sequence for that contradiction appears in the terminal window.
 
 If no blue cells appear, then you will have to try something else. 
 **Key-Cell** is a cheap equivalent to a combination of advanced methods (like 3Dmedusa, 
@@ -307,7 +312,10 @@ etc.
 remove digit 3 at cells (3,5), (1,7), (1,8), (1,9) & (7,4)
 which are in the same house.
 
-This new 3-digit Key-Cell view enables defeating some terribly hard puzzles.
+After removing one red digit as recommended by the Key-Cell test, and flushing its cell, 
+then repeating the process elsewhere might show additional candidates for deletions.
+
+This new Key-Cell test enables defeating some terribly hard puzzles.
 
 -----------------------------------------------------------------------------------------------------
 
@@ -326,8 +334,7 @@ Cells where every digit has been eliminated are one manifestation of a contradic
 ## Build Requirements:
 * systems:  Windows, or GNU/Linux
 * a recent Ada compiler;  eg. GNU-Ada...try this link:
-
-https://github.com/alire-project/GNAT-FSF-builds/releases
+	* https://github.com/alire-project/GNAT-FSF-builds/releases
 
 
 ## Build instructions:
@@ -371,7 +378,7 @@ For those interested, I suggest studying the 2 files
 
 1) This app should be considered an in-progress prototype.
 
-2) There is also a prototype X-sudoku tool (asudx) with similar capabilities & interface.
+2) There is also a prototype X-sudoku tool lsudx (asudx.adb) with similar capabilities & interface.
 In this type of puzzle, each cell can be in either 3 or 4 houses, 
 because the 2 diagonals are also houses.
 
@@ -387,8 +394,8 @@ For X-sudokus use wsolx.bat/susolvex.
 
 ## TBD list:
 * Input puzzle handling is primitive.
-* No Xwing, swordfish or 3Dmedusa highlights, is yet provided. However Digit-Doubles-view (d-key) might help finding Xwings, and KeyDigit (k-key) will, FTTB, provide another way to eliminate candidates.
-* You will probably find that the sparse user interface works differently than mainstream apps, but still can be helpful, nevertheless, and ASUD is free. (I was not inclined to purchase a mainstream app for evaluation!)
+* No Xwing, swordfish or 3Dmedusa highlights, is yet provided. However Digit-Doubles-view (d-key) might help finding Xwings, and KeyCell (k-key) will, FTTB, provide another way to eliminate candidates.
+* You will probably find that the sparse user interface works differently than mainstream apps. (I was not inclined to purchase a mainstream app for evaluation!)
 
 ----------------------------------------------
 
@@ -451,13 +458,6 @@ A standalone sokoban solver, and a morse code tool are only found at the SourceF
 **ver 1.0.0 -- 25may2023**
 
 * Initial release.
-
-
-
-
-
-
-
 
 
 
