@@ -16,29 +16,24 @@ https://github.com/fastrgv/Asud/releases/download/v1.0.3/sud17jun23.7z
 
 
 
+
 # ASUD: Ada Sudoku Assistant
 
 
 ## Most recent changes
 
+
+**ver 1.0.4 -- 23jun2023**
+
+* Added K-key to perform Key-Cell test on every cell until a contradiction is found.
+* Decluttered & minimized console output for Key-Cell tests.
+* Other coding improvements.
+
+
 **ver 1.0.3 -- 17jun2023**
 
 * Fully expanded Key-Cell test (k-key) to allow selecting any cell.
 
-
-**ver 1.0.2 -- 12jun2023**
-
-* Improved & expanded Key-Cell test (k-key) now allows selecting cells with either 2 or 3 entries.
-* Augmented action of Flush keys: f-key flushes a selected cell; F-key flushes all cells.
-* Augmented action of Unique keys: u-key merely displays all singles (green); U-key clears & flushes all singles.
-
-
-**ver 1.0.1 -- 1jun2023**
-
-* Corrections to documentation.
-* Enhancements to displays, keymap.
-* Replace "="-key with 3-way d-key for house digit-doubles.
-* Improved k-key console-terminal explanations.
 
 -----------------------------------------------------------------
 
@@ -75,17 +70,6 @@ Executables that run [offline] on Windows, and GNU/Linux are delivered.
 All source code, build scripts & resources are included.
 
 
-## Display conventions:
-
-* Digit-Doubles can be toggled to show as green singles or red digit-pairs **within** a box;
-	allowing you to manually delete those digits from the cells in aligned rows or columns. 
-	In this view, a single Green digit within a box flags the only occurrence of that digit; 
-	so any others in its cell may be removed.
-
-* CYAN digits can be toggled to show pairs, triples, or quads within each house;
-	allows you to manually delete those digits from the other cells of the house.
-	For triples & quads the displays of naked versus hidden have been separated
-	to reduce confusion.
 
 
 ## Controls:
@@ -132,7 +116,9 @@ All source code, build scripts & resources are included.
 
 * [x]-key		=> view: toggle badXcycle (shows only 1st-found)
 
-* [k]-key		=> view: toggle Key-Cell digit test
+* [k]-key		=> view: toggle Key-Cell digit test of one selected cell
+
+* [K]-key		=> view: toggle Key-Cell test of all cells until contradiction found
 
 * [l]-key		=> view: Linked-pairs hilighted with alternating Magenta/Cyan colors
 
@@ -147,7 +133,8 @@ Notes:
 * Linked-Pairs (l-key): each digit might have multiple chains that are cycled thru in order;
 	(you can make a quick exit by pressing a different view-toggle key).
 * If a bad [contradictory] Xcycle is found, the first/last digits are CYAN, the other digits involved are green.
-* Key-Cell test (k-key), for any selected cell, shows one candidate digit in RED if it leads to logical contradiction. Also shows consequences of the RED digit by showing the resulting singles in GREEN and the resulting empty cells in a BLUE outline.
+* Key-Cell test (k-key): for any selected cell, shows one candidate digit in RED if it leads to logical contradiction. Also shows consequences of the RED digit by showing the resulting singles in GREEN and the resulting empty cells in a BLUE outline.
+* Key-Cell test (K-key): performs Key-Cell test on all cells in lexicographic order until a contradiction is found.
 * Digit-Doubles (d-key) shows houses with 2 aligned digits.
 
 --------------------------------------------
@@ -312,10 +299,15 @@ etc.
 remove digit 3 at cells (3,5), (1,7), (1,8), (1,9) & (7,4)
 which are in the same house.
 
-After removing one red digit as recommended by the Key-Cell test, and flushing its cell, 
-then repeating the process elsewhere might show additional candidates for deletions.
+After removing one red digit as recommended by the Key-Cell test, you should flush its cell.
+If new singles appear, you should flush again with F-key.
+Repeating this process should eventually solve the puzzle.
 
-This new Key-Cell test enables defeating some terribly hard puzzles.
+This new Key-Cell test can solve some [but not all] terribly hard puzzles.
+
+The [capital] K-key does not require selecting a cell; it searches all cells
+in lexicographic order and stops at the first contradiction found. Typically, each application
+will expose new contradictions, until solved.
 
 -----------------------------------------------------------------------------------------------------
 
@@ -324,6 +316,8 @@ Guessing is easy to do with this app. but make sure to save the state **BEFORE**
 If you do and subsequent Unique or Flush operations lead to some empty cells, 
 then you guessed wrong. So then you can easily restore and continue.
 Cells where every digit has been eliminated are one manifestation of a contradictory assumption.
+
+**FTTB do not use the Key-Cell test while guessing since it would overwrite a good restore-file with a questionable one**
 
 
 
@@ -454,13 +448,24 @@ A standalone sokoban solver, and a morse code tool are only found at the SourceF
 
 ## Revision History:
 
+**ver 1.0.2 -- 12jun2023**
+
+* Improved & expanded Key-Cell test (k-key) now allows selecting cells with either 2 or 3 entries.
+* Augmented action of Flush keys: f-key flushes a selected cell; F-key flushes all cells.
+* Augmented action of Unique keys: u-key merely displays all singles (green); U-key clears & flushes all singles.
+
+
+**ver 1.0.1 -- 1jun2023**
+
+* Corrections to documentation.
+* Enhancements to displays, keymap.
+* Replace "="-key with 3-way d-key for house digit-doubles.
+* Improved k-key console-terminal explanations.
+
 
 **ver 1.0.0 -- 25may2023**
 
 * Initial release.
-
-
-
 
 
 
