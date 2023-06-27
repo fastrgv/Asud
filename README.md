@@ -1,5 +1,5 @@
 
-![screenshot](https://github.com/fastrgv/Asud/blob/main/amenu.png)
+![screenshot](https://github.com/fastrgv/Asud/blob/main/menu.png)
 
 Menu Screen
 
