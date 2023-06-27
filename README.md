@@ -10,6 +10,7 @@ Linked-Pairs Screen
 Bad Key Cell Screen
 
 ![screenshot](https://github.com/fastrgv/Asud/blob/main/badXcycle_sudx.png)
+
 Bad Xcycle: remove 3 @ (2,2)
 
 Here is the link to the latest release, which includes all source:
