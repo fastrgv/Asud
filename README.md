@@ -27,24 +27,22 @@ https://github.com/fastrgv/Asud/releases/download/v1.0.5/sud28jun23.7z
 
 
 
+
 # ASUD: Ada Sudoku Assistant
 
 
 ## Most recent changes
 
 
-**ver 1.0.5 -- 28jun2023**
+**ver 1.0.6 -- 1jul2023**
 
-* Simplified Digit-Doubles display. Now easier to spot deletable candidates.
-* Added Xwing view.
-* Clarified xCycle view to show alternating on/off colors.
+* Fixed serious error in Xsudoku keyboard code.
+* Improved action in xCycle-view.
+* Standard (minimal) view now also shows non-aligned box pairs in blue.
+* Added quick [non-modal] method to emplace a single into a selected cell using (ctrl)+(dig)
+* Improved the helpfulness of the Digit-Doubles-view by highlighting removable digits.
 
-**ver 1.0.4 -- 23jun2023**
-
-* Added K-key to perform Key-Cell test on every cell until a contradiction is found.
-* Decluttered & minimized console output for Key-Cell tests.
-* Other coding improvements.
-
+More revision history is at end of this file.
 
 -----------------------------------------------------------------
 
@@ -61,11 +59,16 @@ even if its cell has other candidates.
 
 ## Introduction
 
-Pencil & paper Sudoku fans that need help will find that this app can help 
-them to get a new perspective, using any PC or laptop.
-
 ASUD is a sudoku assistant tool designed to help with manually solving Sudoku puzzles.
 It handles routine tasks so you can focus on more advanced puzzle solving strategies.
+
+For example, some of the routine and somewhat tedious tasks are:
+
+* noticing single occurrences of a digit within some house
+* removing a singleton digit from all visible cells
+* noticing whether a digit is removable in a given circumstance
+* finding hidden triples & quads, etc.
+
 In each of the 81 cells, all candidate digits can be shown. The working goal is to
 facilitate the removal of as many candidate digits (aka pencil marks) as possible.
 
@@ -76,6 +79,8 @@ The default display shows all candidate digits in each cell. However, one can to
 minimal "standard" display that just shows a) known singles, b) box-digit-pairs.
 This minimal display could allow easier pattern recognition.
 
+Pencil & paper Sudoku fans that get stuck will find that this app can help 
+them to get a new perspective, using any PC or laptop.
 This package includes executables that run on Windows, and Linux.
 All source code, build scripts & resources are included.
 
@@ -84,9 +89,11 @@ All source code, build scripts & resources are included.
 
 ## Controls:
 
-* mouse-click 	=> select one of 81 cells from among 9x9 array to edit
+* mouse-click 	=> select/Deselect one of 81 cells from among 9x9 array to edit
 
 * [1..9]-key	=> toggle candidate numeral n within selected cell
+
+* [ctrl]+[1..9] => assert numeral n within selected cell
 
 * [esc]-key		=> Quit
 
@@ -114,7 +121,7 @@ All source code, build scripts & resources are included.
 --------------------------------------------------------------------------
 
 * [m]-key		=> view toggle Minimal: hides unknown candidate digits except for 
-						RED box-doubles, & GREEN singles.
+						aligned-box-doubles (Red), singles(Green), & non-aligned-box-doubles(Blue).
 
 * [p]-key		=> view toggle: Pairs: 1) hidden, 2) naked, 3) Off
 
@@ -134,10 +141,12 @@ All source code, build scripts & resources are included.
 
 * [l]-key		=> view: Linked-pairs hilighted with alternating Magenta/Cyan colors
 
-* [d]-key		=> view toggle: Digit-Doubles: 1) row, 2) col, 3) box, 4) Off
+* [d]-key		=> view toggle: Digit-Doubles: 1) box, 2) row, 3) col, 4) Off
+
 --------------------------------------------------------------------------
 and for Sudoku-X...
-* [d]-key		=> view toggle: Digit-Doubles: 1) X(Diag), 2) R(row), 3) C(col), 4) B(box), 5) Off
+
+* [d]-key		=> view toggle: Digit-Doubles: 1) X(Diag), 2) B(box), 3) R(row), 4) C(col), 5) Off
 
 
 Notes:
@@ -149,7 +158,7 @@ Notes:
 * If a bad [contradictory] Xcycle is found, the first/last digits are Green, the other digits involved alternate between Red(off) and Green(on).
 * Key-Cell test (k-key): for any selected cell, shows one candidate digit in RED if it leads to logical contradiction. Also shows consequences of the RED digit by showing the resulting singles in GREEN and the resulting empty cells in a BLUE outline.
 * Key-Cell test (K-key): performs Key-Cell test on all cells in lexicographic order until a contradiction is found.
-* Digit-Doubles (d-key) shows houses with 2 aligned digits. Row/Col shows rows and columns with digit-doubles, while Box shows boxes with digit-doubles (often refered to as "standard notation"). 
+* Digit-Doubles (d-key) shows houses with only 2 like-digits. Row/Col shows rows and columns with digit-doubles, while Box shows boxes with digit-doubles. Each of these modes highlight the doubles in red, any singles in green, and removable candidates in cyan.
 
 
 --------------------------------------------
@@ -222,9 +231,9 @@ The general idea for solving any sudoku puzzle is to eliminate candidates in eac
 
 Use the following ASUD-methods to work towards a solution:
 
-* using the Digit-Doubles-Box-view, remove [Black] candidates aligned with matching RED digit-pairs in a box
 * using the Unique screen (u-key), if a cell has a GREEN digit, remove any others in the same cell; then flush.
 * remove candidates using 
+	* Digit-Doubles-view
 	* Hidden Pairs/Triples/Quad-view
 	* Ywing-view
 	* Xwing-view
@@ -238,6 +247,21 @@ The hidden pairs/triples/quads tool allows particularly easy removal of excess c
 Simply remove the digits in each involved cell that are NOT highlighted.
 
 If new RED pairs or GREEN singles appear, you might be able to eliminate even more candidates.
+
+-----------------------------------------------------------------------------------------------------
+
+### Digit-Doubles Box View
+
+* Doubles highlighted in Red, any singles in Green.
+* Removable like digits aligned with box-pairs (pointing-pairs) are highlighted (Cyan).
+
+-----------------------------------------------------------------------------------------------------
+
+### Digit-Doubles Row/Col View
+
+* Doubles highlighted in Red, any singles in Green.
+* If a double occurs within a box, then other like digits in that box are removable and highlighted (Cyan).
+* You might also notice Xwing variants not handled by Xwing-view.
 
 -----------------------------------------------------------------------------------------------------
 
@@ -376,13 +400,11 @@ For those interested, I suggest studying the 2 files
 
 ## Final Notes
 
-1) This app should be considered an in-progress prototype.
-
-2) There is also a prototype X-sudoku tool lsudx (asudx.adb) with similar capabilities & interface.
+1) There is also a prototype X-sudoku tool lsudx (asudx.adb) with similar capabilities & interface.
 In this type of puzzle, each cell can be in either 3 or 4 houses, 
 because the 2 diagonals are also houses.
 
-3) Brute-force solvers [susolve/susolvex] are also included under ./bruteForceSolver/. 
+2) Brute-force solvers [susolve/susolvex] are also included under ./bruteForceSolver/. 
 They display the first-found solution to the screen:
 
 * wsol.bat {filename} (on Windows)
@@ -393,9 +415,12 @@ For X-sudokus use wsolx.bat/susolvex.
 -------------------------------------------------------------------------
 
 ## TBD list:
-* Input puzzle handling is still primitive.
-* No swordfish or 3Dmedusa, is provided. However KeyCell (K-key) will provide another way to eliminate candidates.
-* You will probably find that the sparse user interface works differently than mainstream apps. (I was not inclined to purchase a mainstream app for evaluation!)
+* Input puzzle handling is primitive.
+* User interface is spartan.
+* Could be better at facilitating the human discovery process.
+
+## Summary:
+My original intent in writing this app was to avoid the optical drudgery of discovering unique singles or hidden triples/quads. But since then I have watched some inspiring videos on how a Sudoku tool could enhance the fun of puzzle solving. Watch for future releases!
 
 ----------------------------------------------
 
@@ -454,8 +479,20 @@ A standalone sokoban solver, and a morse code tool are only found at the SourceF
 
 ## Revision History:
 
+**ver 1.0.5 -- 28jun2023**
+
+* Simplified Digit-Doubles display. Now easier to spot deletable candidates.
+* Added Xwing view.
+* Clarified xCycle view to show alternating on/off colors.
+
+**ver 1.0.4 -- 23jun2023**
+
+* Added K-key to perform Key-Cell test on every cell until a contradiction is found.
+* Decluttered & minimized console output for Key-Cell tests.
+* Other coding improvements.
 
 **ver 1.0.3 -- 17jun2023**
+
 * Fully expanded Key-Cell test (k-key) to allow selecting any cell.
 
 **ver 1.0.2 -- 12jun2023**
@@ -465,13 +502,24 @@ A standalone sokoban solver, and a morse code tool are only found at the SourceF
 * Augmented action of Unique keys: u-key merely displays all singles (green); U-key clears & flushes all singles.
 
 **ver 1.0.1 -- 1jun2023**
+
 * Corrections to documentation.
 * Enhancements to displays, keymap.
 * Replace "="-key with 3-way d-key for house digit-doubles.
 * Improved k-key console-terminal explanations.
 
 **ver 1.0.0 -- 25may2023**
+
 * Initial release.
+
+
+
+
+
+
+
+
+
 
 
 
