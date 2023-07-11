@@ -28,17 +28,28 @@ https://github.com/fastrgv/Asud/releases/download/v1.0.6/sud01jul23.7z
 
 
 
+
 # ASUD: Ada Sudoku Assistant
 
 
 ## Most recent changes
 
 
+**ver 1.0.7 -- 12jul2023**
+
+* Changed highlight colors;  now more uniform with deletable digits Cyan.
+* Hidden pairs/triples/quads now color deletable digits Cyan.
+* Better terminal messaging.
+* Corrected (generalized) algorithms searching for naked: Pairs/Triples/Quads.
+* Pointing-Pairs now shown as Red, Singles as Green, in default mode.
+* Changed u-key action; changed k-key action.
+* When no inconsistent X-Cycles are found, the search continues by seeking consistent X-Cycles that exhibit deletable digits.
+
+
 **ver 1.0.6 -- 1jul2023**
 
-* Fixed serious error in Xsudoku keyboard code.
+* Fixed error in Xsudoku keyboard code.
 * Improved action in xCycle-view.
-* Standard (minimal) view now also shows non-aligned box pairs in blue.
 * Added quick [non-modal] method to emplace a single into a selected cell using (ctrl)+(dig)
 * Improved the helpfulness of the Digit-Doubles-view by highlighting removable digits.
 
@@ -53,7 +64,7 @@ In X-sudoku, a cell could also belong to a 4th house: the diagonal.
 Saying cells can "see" each other means they share a house.
 Singles are cells with all digits but one eliminated. A single also
 refers to a candidate digit that is unique in one of its houses,
-even if its cell has other candidates.
+even if its cell has other candidates listed.
 
 
 
@@ -62,24 +73,24 @@ even if its cell has other candidates.
 ASUD is a sudoku assistant tool designed to help with manually solving Sudoku puzzles.
 It handles routine tasks so you can focus on more advanced puzzle solving strategies.
 
-For example, some of the routine and somewhat tedious tasks are:
+For example, some routine, but tedious tasks are:
 
-* noticing single occurrences of a digit within some house
+* noticing single occurrences of a digit within a house
 * removing a singleton digit from all visible cells
-* noticing whether a digit is removable in a given circumstance
-* finding hidden triples & quads, etc.
+* finding hidden pairs, triples & quads, etc.
 
 In each of the 81 cells, all candidate digits can be shown. The working goal is to
 facilitate the removal of as many candidate digits (aka pencil marks) as possible.
 
-Algorithms have been added to detect and display (hidden or naked) pairs, triples, & quads,
+Algorithms have been added to detect and display hidden (or naked) pairs, triples, & quads,
 whose display can be toggled.
 
-The default display shows all candidate digits in each cell. However, one can toggle a 
-minimal "standard" display that just shows a) known singles, b) box-digit-pairs.
+The default display shows all candidate digits in the center of each cell. 
+However, one can toggle a Minimal view that just shows 
+a) known singles, b) aligned box-digit-pairs.
 This minimal display could allow easier pattern recognition.
 
-Pencil & paper Sudoku fans that get stuck will find that this app can help 
+Sudoku fans that get stuck will find that this app can help 
 them to get a new perspective, using any PC or laptop.
 This package includes executables that run on Windows, and Linux.
 All source code, build scripts & resources are included.
@@ -109,9 +120,7 @@ All source code, build scripts & resources are included.
 * [F]-key		=> Flush-All: for every cell with a single digit,
 						remove it from all other cells in its 3 houses.
 
-* [u]-key		=> showUniques: displays in green any digit unique to a house.
-
-* [U]-key		=> processUniques: searches all houses
+* [u]-key		=> processUniques: searches all houses
 						for a single occurrence of a given digit, then
 						removes all other candidate digits in its cell,
 						and then performs a Flush operation on its other houses.
@@ -120,8 +129,8 @@ All source code, build scripts & resources are included.
 
 --------------------------------------------------------------------------
 
-* [m]-key		=> view toggle Minimal: hides unknown candidate digits except for 
-						aligned-box-doubles (Red), singles(Green), & non-aligned-box-doubles(Blue).
+* [m]-key		=> view toggle Minimal: hides candidate digits except for 
+						aligned-box-doubles (Red), singles(Green).
 
 * [p]-key		=> view toggle: Pairs: 1) hidden, 2) naked, 3) Off
 
@@ -133,13 +142,11 @@ All source code, build scripts & resources are included.
 
 * [y]-key		=> view toggle: Ywing (shows only 1st-found)
 
-* [c]-key		=> view toggle: bad-xCycle (shows only 1st-found)
+* [c]-key		=> view toggle: xCycle (shows only 1st-found, search bad, then good)
 
-* [k]-key		=> view toggle: Key-Cell digit test of one selected cell
+* [k]-key		=> view toggle: Key-Cell test of all cells until contradiction found
 
-* [K]-key		=> view toggle: Key-Cell test of all cells until contradiction found
-
-* [l]-key		=> view: Linked-pairs hilighted with alternating Magenta/Cyan colors
+* [l]-key		=> view: Linked-pairs hilighted with alternating Red/Green colors
 
 * [d]-key		=> view toggle: Digit-Doubles: 1) box, 2) row, 3) col, 4) Off
 
@@ -155,10 +162,10 @@ Notes:
 * The last 10 view-toggles are mutually exclusive: activating one deactivates others.
 * Linked-Pairs (l-key): each digit might have multiple chains that are cycled thru in order;
 	(you can make a quick exit by pressing a different view-toggle key).
-* If a bad [contradictory] Xcycle is found, the first/last digits are Green, the other digits involved alternate between Red(off) and Green(on).
-* Key-Cell test (k-key): for any selected cell, shows one candidate digit in RED if it leads to logical contradiction. Also shows consequences of the RED digit by showing the resulting singles in GREEN and the resulting empty cells in a BLUE outline.
-* Key-Cell test (K-key): performs Key-Cell test on all cells in lexicographic order until a contradiction is found.
-* Digit-Doubles (d-key) shows houses with only 2 like-digits. Row/Col shows rows and columns with digit-doubles, while Box shows boxes with digit-doubles. Each of these modes highlight the doubles in red, any singles in green, and removable candidates in cyan.
+* Key-Cell test (k-key): performs Key-Cell test on all cells in lexicographic order until a contradiction is found. If so, the hypothetical singles are shown in Blue and resulting empty cells in Blue outline.
+* Digit-Doubles (d-key) shows houses with only 2 aligned, like-digits. Row/Col shows rows and columns with digit-doubles, while Box shows boxes with digit-doubles. Each of these modes highlight the doubles in red, any [assertable] singles in Green, and removable candidates in cyan.
+
+* xCycles looks for contradictory inference chains. Shows only the first found. If found, the first cell in the chain is responsible for the contradiction, so is shown in Cyan as being deletable. If not found, it then searches for consistent chains with deletable cells that see two colors.
 
 
 --------------------------------------------
@@ -231,7 +238,6 @@ The general idea for solving any sudoku puzzle is to eliminate candidates in eac
 
 Use the following ASUD-methods to work towards a solution:
 
-* using the Unique screen (u-key), if a cell has a GREEN digit, remove any others in the same cell; then flush.
 * remove candidates using 
 	* Digit-Doubles-view
 	* Hidden Pairs/Triples/Quad-view
@@ -240,26 +246,26 @@ Use the following ASUD-methods to work towards a solution:
 	* Linked-Pairs-view
 	* xCycle-view.
 * F-key: Flush all dups
-* U-key: process all [Unique] singles
+* u-key: process all [Unique] singles: remove other candidates in same cell, then flush.
 
 -----------------------------------------------------------------------------------------------------
 The hidden pairs/triples/quads tool allows particularly easy removal of excess candidates.
 Simply remove the digits in each involved cell that are NOT highlighted.
 
-If new RED pairs or GREEN singles appear, you might be able to eliminate even more candidates.
+If new digit pairs or singles appear, you might be able to eliminate even more candidates.
 
 -----------------------------------------------------------------------------------------------------
 
 ### Digit-Doubles Box View
 
-* Doubles highlighted in Red, any singles in Green.
+* Doubles highlighted in Red.
 * Removable like digits aligned with box-pairs (pointing-pairs) are highlighted (Cyan).
 
 -----------------------------------------------------------------------------------------------------
 
 ### Digit-Doubles Row/Col View
 
-* Doubles highlighted in Red, any singles in Green.
+* Doubles highlighted in Red.
 * If a double occurs within a box, then other like digits in that box are removable and highlighted (Cyan).
 * You might also notice Xwing variants not handled by Xwing-view.
 
@@ -277,20 +283,31 @@ The Linked-Pairs view allows manual application of the following rules for elimi
 Helpful comments to identify removable digits are printed in the terminal window.
 EG [ linked-pairs(3) 1 of 3 ] shows comments like:
 
-row:3, dig= 3...multiple magenta digits; must be Off, thus removable (1st rule above).
 
-removable dig= 9 @(3,2) can see 2 colors! (2nd rule above).
+LinkedPairs removable dig= 9 @(3,2) can see 2 colors! (2nd rule above).
+
+LinkedPairs box#9, dig= 9...multiple same-color-digits => removable (1st rule)
 
 
 -----------------------------------------------------------------------------------------------------
 
-### Bad-xCycle-View
-Similar to linked-pairs, the bad-Xcycle view shows a chain of digits with alternating 
-colors, where Green represents ON and Red is OFF. If anything is displayed,
-then the first Green digit shares a house with another, which is contradictory.
-Thusly, the first digit in the chain should be removed.
+### xCycle-View
+This view first looks for contradictory xCycles, which are somewhat similar to linked-pairs.
+This inconsistent-xCycle view shows a chain of digits with alternating 
+colors, where Blue represents ON and Red is OFF [in the forward direction]. If anything is 
+displayed, then the first digit, originally Blue because it was assumed ON, 
+shares a house with another Blue, which is contradictory.
+Thusly, the first digit in the chain should be removed, indicated by its [new] color Cyan.
 The on-screen label shows the cell-coordinates of the first & last cells in the chain;
-EG: "Xcycle-19-99" indicates the first cell in the chain is at row=1, col=9.
+EG: "xCycle-19-99" indicates the first cell in the chain is at row=1, col=9.
+The console terminal lists the logical sequences of digit states.
+
+If that first search fails, it then searches for a consistent x-cycle chain that generates
+any [Cyan-colored] deletable cells that can see both Blue & Red colors.
+Again, the console terminal lists the logical sequences of digit states.
+Note that a consistent sequence can be read backwards if one reverses the color 
+interpretations, i.e. Red=On, Blue=Off.
+
 
 -----------------------------------------------------------------------------------------------------
 
@@ -307,6 +324,13 @@ If no target exists, or it has been removed, then nothing will be displayed.
 Two digit-pairs are highlighted in CYAN so that any like digits in the same row or column may be removed, shown in RED. Note that Xwings are not displayed unless there are digits to remove.
 
 -----------------------------------------------------------------------------------------------------
+One can easily find references online that give more complete definitions of the previous concepts:
+* Linked Pairs
+* X-cycles
+* Xwings
+* Ywings
+
+-----------------------------------------------------------------------------------------------------
 All the techniques above will only solve the simpler puzzles.
 There exists very difficult ones that require advanced methods and insights...
 
@@ -315,8 +339,8 @@ There exists very difficult ones that require advanced methods and insights...
 ### Key-Cell-View
 If you have reduced the candidates as much as possible with other methods, but still
 need help, you can select any cell with the mouse, then use the k-key. This, last-resort
-**Key-Cell** test searches the ramifications of selecting each digit in the cell, which might lead
-to a logical contradiction. If so, the digit is shown in RED, indicating it should be removed.
+**Key-Cell** test searches the ramifications of selecting each digit in each cell, which might lead
+to a logical contradiction. If so, the digit is shown in Cyan, indicating it should be removed.
 A contradiction eventually appears in the form of a cell that would become empty, outlined in blue.
 The logic sequence for that contradiction appears in the terminal window.
 
@@ -325,7 +349,7 @@ If no blue cells appear, then no contradictions were found and you will have to 
 Alternate-Inference-Chain, Hidden-Unique-Rectangle, etc.), all of which assume a single in a cell, 
 followed by a chain of inferences leading to a contradiction.
 
-A logical sequence of new singles followed by the resulting deletions is
+The logical sequence of hypothetical new (BLUE) singles followed by the resulting deletions is
 written to the console window to explain why the blue cells are empty.
 
 EG:
@@ -339,16 +363,10 @@ etc.
 ...meaning: if we assume digit 3 in cell @ row=1, col=4 then the consequences are to
 remove digit 3 at cells (3,5), (1,7), (1,8), (1,9) & (7,4)
 which are in the same house.
-
-After removing one red digit as recommended by the Key-Cell test, you should flush its cell.
-If new singles appear, you should flush again with F-key.
 Repeating this process should eventually solve the puzzle, in most cases.
-
 This new Key-Cell test can solve some [but not all] terribly hard puzzles.
 
-The [capital] K-key does not require selecting a cell; it searches all cells
-in lexicographic order and stops at the first contradiction found. Typically, each application
-will expose new contradictions, until solved.
+All cells are searched in lexicographic order and stops at the first contradiction found. Typically, each application will expose new contradictions, until solved.
 
 -----------------------------------------------------------------------------------------------------
 
@@ -383,25 +401,10 @@ your actual installation directory for the 64bit GNU Ada compiler.
 
 -------------------------------------------------------
 
-
-## Algorithmic Notes
-
-There is an interesting relation between the two algorithms to find 
-naked and hidden pairs, triples or quads. The hidden searches are a 
-much more formidable problem for humans, yet the algorithmic solution 
-is similar and only slightly more complex. In fact, I would call the 
-two algorithms mathematical duals...complementary strategies, in some sense.
-
-For those interested, I suggest studying the 2 files
-
-* asud-nakedpairs.adb 
-* asud-hiddenpairs.adb.
-
-
 ## Final Notes
 
-1) There is also a prototype X-sudoku tool lsudx (asudx.adb) with similar capabilities & interface.
-In this type of puzzle, each cell can be in either 3 or 4 houses, 
+1) An X-sudoku tool lsudx (asudx.adb) with similar capabilities & interface
+is included. In this type of puzzle, each cell can be in either 3 or 4 houses, 
 because the 2 diagonals are also houses.
 
 2) Brute-force solvers [susolve/susolvex] are also included under ./bruteForceSolver/. 
@@ -420,7 +423,7 @@ For X-sudokus use wsolx.bat/susolvex.
 * Could be better at facilitating the human discovery process.
 
 ## Summary:
-My original intent in writing this app was to avoid the optical drudgery of discovering unique singles or hidden triples/quads. But since then I have watched some inspiring videos on how a Sudoku tool could enhance the fun of puzzle solving. Watch for future releases!
+My original intent in writing this app was to avoid the optical drudgery of discovering unique singles or hidden triples/quads. But since then I have watched some inspiring videos on how a Sudoku tool could enhance the fun of puzzle solving. Watch for [improved] future releases!
 
 ----------------------------------------------
 
@@ -511,11 +514,6 @@ A standalone sokoban solver, and a morse code tool are only found at the SourceF
 **ver 1.0.0 -- 25may2023**
 
 * Initial release.
-
-
-
-
-
 
 
 
