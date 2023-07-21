@@ -27,10 +27,16 @@ https://github.com/fastrgv/Asud/releases/download/v1.0.8/sud19jul23.7z
 
 
 
+
 # ASUD: Ada Sudoku Assistant
 
 
 ## Most recent changes
+
+
+**ver 1.0.9 -- 22jul2023**
+
+* Deleting removable candidates while viewing Linked-Pairs now works as expected.
 
 
 **ver 1.0.8 -- 19jul2023**
@@ -162,8 +168,8 @@ Notes:
 
 * Naked triples **within boxes** are NOT shown to reduce clutter. Same for naked quads & naked pairs.
 * The last 10 view-toggles are mutually exclusive: activating one deactivates others.
-* Linked-Pairs (l-key): each digit might have multiple chains that are cycled thru in order;
-	(you can make a quick exit by pressing a different view-toggle key).
+* Linked-Pairs (l-key): each digit might have multiple chains of related pairs that are cycled 
+thru in order; (you can make a quick exit by pressing a different view-toggle key).
 * Key-Cell test (k-key): performs Key-Cell test on all cells in lexicographic order until a contradiction is found. If so, the hypothetical singles are shown in Blue and resulting empty cells in Blue outline. Deleted digits are shown in Orange.
 * Digit-Doubles (d-key) shows houses with only 2 aligned, like-digits. Row/Col shows rows and columns with digit-doubles, while Box shows boxes with digit-doubles. Each of these modes highlight the doubles in red, any [assertable] singles in Green, and removable candidates in cyan.
 
@@ -275,14 +281,19 @@ If new digit pairs or singles appear, you might be able to eliminate even more c
 
 ### Linked-Pairs-View
 A digit-pair refers to a single house with exactly 2 occurrences of a
-particular digit. This view shows a chain of digit pairs with alternating colors 
+particular digit. That means they are strongly connected in the sense that
+if one of them is OFF then the other must be ON.
+This view shows a chain of digit pairs with alternating colors 
 (nominally Red/Blue), where one color represents ON and the other OFF, 
-but until we find a problem, we don't yet know which is which.
+but we don't know which is which. Note that a chain if digit pairs may form
+a tree structure, rather than a linear sequence.
+
 The Linked-Pairs view allows manual application of the following rules for elimination:
 
 * if any house has 2 digits of same color, that color must represent OFF (to be eliminated).
-* if any non-colored digit can "see" itself in both colors, it must be OFF (eliminated).
-* all removable digits now have their color changed from their nominal color to Cyan.
+* if any non-chain digit can "see" itself in both colors, it must be OFF (eliminated).
+
+**Note:  all removable digits have their color changed to Cyan.**
 
 Helpful comments to identify removable digits are printed in the terminal window.
 EG [ linked-pairs(3) 1 of 3 ] shows comments like:
@@ -292,9 +303,10 @@ LinkedPairs removable dig= 9 @(3,2) can see 2 colors! (2nd rule above).
 
 LinkedPairs box#9, dig= 9...multiple same-color-digits => removable (1st rule)
 
-The sequence of digit pairs is printed to the terminal also.
+The current chain of related digit pairs is printed to the terminal,
+along with a list of deletable candidates.
 
-Update: chains that do not result in deletable digits are now skipped.
+Finally, chains that do not result in deletable digits are now skipped.
 
 
 -----------------------------------------------------------------------------------------------------
@@ -533,11 +545,6 @@ A standalone sokoban solver, and a morse code tool are only found at the SourceF
 **ver 1.0.0 -- 25may2023**
 
 * Initial release.
-
-
-
-
-
 
 
 
