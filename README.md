@@ -28,10 +28,18 @@ https://github.com/fastrgv/Asud/releases/download/v1.0.9/sud22jul23.7z
 
 
 
+
 # ASUD: Ada Sudoku Assistant
 
 
 ## Most recent changes
+
+
+**ver 1.1.0 -- 26jul2023**
+
+* Fixed HiddenTriples error in ASUDX (lsudx).
+* Improved Hidden Quads/Triples/Pairs to distinguish between row/col/box views.
+* Now display boxPairs/boxTriples that were previously suppressed (to reduce clutter).
 
 
 **ver 1.0.9 -- 22jul2023**
@@ -39,33 +47,11 @@ https://github.com/fastrgv/Asud/releases/download/v1.0.9/sud22jul23.7z
 * Deleting removable candidates while viewing Linked-Pairs now works as expected.
 
 
-**ver 1.0.8 -- 19jul2023**
-
-* Minor color changes for greater uniformity.
-* Fixed X-Cycle logic for Sudoku-X (lsudx).
-* Removed some unused code.
-* KeyCell: now shows hypothetically-deleted digits in orange.
-* Refined KeyCell terminal output.
-* LinkedPairs now displays all deletable digits in Cyan.
-* LinkedPairs now skips chains with no deletable digits.
-
-
-**ver 1.0.7 -- 12jul2023**
-
-* Changed highlight colors;  now more uniform with deletable digits Cyan.
-* Hidden pairs/triples/quads now color deletable digits Cyan.
-* Better terminal messaging.
-* Corrected (generalized) algorithms searching for naked: Pairs/Triples/Quads.
-* Pointing-Pairs now shown as Red, Singles as Green, in default mode.
-* Changed u-key action; changed k-key action.
-* When no inconsistent X-Cycles are found, the search continues by seeking consistent X-Cycles that exhibit deletable digits.
-
-
 More revision history is at end of this file.
 
 -----------------------------------------------------------------
 
-### First, some terminology:
+### Terminology
 
 A given cell belongs to 3 "houses": its row, its column, its 3x3 box.
 In X-sudoku, a cell could also belong to a 4th house: the diagonal.
@@ -140,17 +126,17 @@ All source code, build scripts & resources are included.
 * [m]-key		=> view toggle Minimal: hides candidate digits except for 
 						aligned-box-doubles (Red), singles(Green).
 
-* [p]-key		=> view toggle: Pairs: 1) hidden, 2) naked, 3) Off
+* [p]-key		=> view toggle: Pairs: 1) hidden-box, 2) hidden-row, 3) hidden-col, 4) naked, 5) Off
 
-* [t]-key		=> view toggle: Triples: 1) Hidden, 2) Naked, 3) Off
+* [t]-key		=> view toggle: Triples: 1) hidden-box, 2) hidden-row, 3) hidden-col, 4) Naked, 5) Off
 
-* [q]-key		=> view toggle: Quads: 1) Hidden, 2) Naked, 3) Off
+* [q]-key		=> view toggle: Quads: 1) hidden-box, 2) hidden-row, 3) hidden-col, 4) Naked, 5) Off
 
-* [x]-key		=> view toggle: Xwing (shows only 1st-found; red implies removable)
+* [x]-key		=> view toggle: Xwing (shows only 1st-found; cyan implies removable)
 
 * [y]-key		=> view toggle: Ywing (shows only 1st-found)
 
-* [c]-key		=> view toggle: xCycle (shows only 1st-found, search bad, then good)
+* [c]-key		=> view toggle: xCycle (shows only 1st-found, searches bad, then good)
 
 * [k]-key		=> view toggle: Key-Cell test of all cells until contradiction found
 
@@ -159,10 +145,6 @@ All source code, build scripts & resources are included.
 * [d]-key		=> view toggle: Digit-Doubles: 1) box, 2) row, 3) col, 4) Off
 
 --------------------------------------------------------------------------
-and for Sudoku-X...
-
-* [d]-key		=> view toggle: Digit-Doubles: 1) X(Diag), 2) B(box), 3) R(row), 4) C(col), 5) Off
-
 
 Notes:
 
@@ -258,7 +240,7 @@ Use the following ASUD-methods to work towards a solution:
 
 -----------------------------------------------------------------------------------------------------
 The hidden pairs/triples/quads tool allows particularly easy removal of excess candidates.
-Simply remove the digits in each involved cell that are NOT highlighted.
+Simply remove the Cyan digits in each involved cell.
 
 If new digit pairs or singles appear, you might be able to eliminate even more candidates.
 
@@ -285,8 +267,8 @@ particular digit. That means they are strongly connected in the sense that
 if one of them is OFF then the other must be ON.
 This view shows a chain of digit pairs with alternating colors 
 (nominally Red/Blue), where one color represents ON and the other OFF, 
-but we don't know which is which. Note that a chain if digit pairs may form
-a tree structure, rather than a linear sequence.
+but we don't know which is which. Note that a chain of digit-pairs may form
+a tree structure of related digit-pairs, rather than a linear sequence.
 
 The Linked-Pairs view allows manual application of the following rules for elimination:
 
@@ -323,7 +305,7 @@ EG: "xCycle-19-99" indicates the first cell in the chain is at row=1, col=9.
 The console terminal lists the logical sequences of digit states.
 
 If that first search fails, it then searches for a consistent x-cycle chain that generates
-any [Cyan-colored] deletable cells that can see both Blue & Red colors.
+any [Cyan-colored] deletable cells that can see both Blue & Red colored chain links.
 Again, the console terminal lists the logical sequences of digit states.
 Note that a consistent sequence can be read backwards if one reverses the color 
 interpretations, i.e. Red=On, Blue=Off.
@@ -504,6 +486,27 @@ A standalone sokoban solver, and a morse code tool are only found at the SourceF
 
 ## Revision History:
 
+**ver 1.0.8 -- 19jul2023**
+
+* Minor color changes for greater uniformity.
+* Fixed X-Cycle logic for Sudoku-X (lsudx).
+* Removed some unused code.
+* KeyCell: now shows hypothetically-deleted digits in orange.
+* Refined KeyCell terminal output.
+* LinkedPairs now displays all deletable digits in Cyan.
+* LinkedPairs now skips chains with no deletable digits.
+
+
+**ver 1.0.7 -- 12jul2023**
+
+* Changed highlight colors;  now more uniform with deletable digits Cyan.
+* Hidden pairs/triples/quads now color deletable digits Cyan.
+* Better terminal messaging.
+* Corrected (generalized) algorithms searching for naked: Pairs/Triples/Quads.
+* Pointing-Pairs now shown as Red, Singles as Green, in default mode.
+* Changed u-key action; changed k-key action.
+* When no inconsistent X-Cycles are found, the search continues by seeking consistent X-Cycles that exhibit deletable digits.
+
 
 **ver 1.0.6 -- 1jul2023**
 
@@ -545,6 +548,11 @@ A standalone sokoban solver, and a morse code tool are only found at the SourceF
 **ver 1.0.0 -- 25may2023**
 
 * Initial release.
+
+
+
+
+
 
 
 
