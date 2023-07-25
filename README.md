@@ -21,7 +21,7 @@ Bad Xcycle: remove 3 @ (2,2)
 
 Here is the link to the latest release, which includes all source:
 
-https://github.com/fastrgv/Asud/releases/download/v1.0.9/sud22jul23.7z
+https://github.com/fastrgv/Asud/releases/download/v1.1.0/sud26jul23.7z
 
 ===============================================================================
 
