@@ -8,11 +8,11 @@ Menu Screen
 Linked-Pairs Screen
 
 
-![screenshot](https://github.com/fastrgv/Asud/blob/main/badKeyCell.png)
+![screenshot](https://github.com/fastrgv/Asud/blob/main/keyCellTrace.png)
 Bad Key Cell Screen
 
 
-![screenshot](https://github.com/fastrgv/Asud/blob/main/badXcycle_sudx.png)
+![screenshot](https://github.com/fastrgv/Asud/blob/main/badXC.png)
 
 Bad Xcycle: remove 3 @ (2,2)
 
