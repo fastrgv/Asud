@@ -29,22 +29,24 @@ https://github.com/fastrgv/Asud/releases/download/v1.1.0/sud26jul23.7z
 
 
 
+
 # ASUD: Ada Sudoku Assistant
 
 
 ## Most recent changes
 
 
+**ver 1.1.1 -- 30jul2023**
+
+* Aligned Box Digit Doubles view (pointing-pairs) now includes aligned box digit triples (pointing-triples), and can be toggled on or off with the a-key.
+* Improved console output for consistent x-Cycles.
+* Minor change in f-key action.
+
 **ver 1.1.0 -- 26jul2023**
 
 * Fixed HiddenTriples error in ASUDX (lsudx).
 * Improved Hidden Quads/Triples/Pairs to distinguish between row/col/box views.
 * Now display boxPairs/boxTriples that were previously suppressed (to reduce clutter).
-
-
-**ver 1.0.9 -- 22jul2023**
-
-* Deleting removable candidates while viewing Linked-Pairs now works as expected.
 
 
 More revision history is at end of this file.
@@ -74,7 +76,7 @@ For example, some routine, but tedious tasks are:
 * finding hidden pairs, triples & quads, etc.
 
 In each of the 81 cells, all candidate digits can be shown. The working goal is to
-facilitate the removal of as many candidate digits (aka pencil marks) as possible.
+facilitate the removal of as many candidate digits as possible.
 
 Algorithms have been added to detect and display hidden (or naked) pairs, triples, & quads,
 whose display can be toggled.
@@ -102,29 +104,32 @@ All source code, build scripts & resources are included.
 
 * [esc]-key		=> Quit
 
-* [h]-key		=> toggle this key menu
+* [a]-key		=> toggle Aligned Box Digit Doubles (Red) with Cyan deletables.
+* [n]-key		=> toggle Nonaligned Box Digit Doubles (Purple)...utility doubtful.
 
-* [s]-key		=> Save puzzle state for later restart
+* [h]-key		=> toggle this key Help menu
 
-* [r]-key		=> Restore (using data from previous save)
 
-* [f]-key		=> Flush-dups: after selecting a cell with a single candidate digit,
+* [f]-key		=> Flush: If no cell is selected, then for every cell with a single digit,
 						remove it from all other cells in its 3 houses.
+						If a cell is selected, it flushes just that one cell,
 
-* [F]-key		=> Flush-All: for every cell with a single digit,
-						remove it from all other cells in its 3 houses.
 
 * [u]-key		=> processUniques: searches all houses
 						for a single occurrence of a given digit, then
 						removes all other candidate digits in its cell,
 						and then performs a Flush operation on its other houses.
 
+* [s]-key		=> Save puzzle state for later restart
+
+* [r]-key		=> Restore (using data from previous save)
+
 * [b]-key		=> toggle a Brute-Force solver to find & show [first] solution
 
 --------------------------------------------------------------------------
 
-* [m]-key		=> view toggle Minimal: hides candidate digits except for 
-						aligned-box-doubles (Red), singles(Green).
+* [m]-key		=> view toggle Minimal: hides most candidate digits except for 
+						singles(Green).
 
 * [p]-key		=> view toggle: Pairs: 1) hidden-box, 2) hidden-row, 3) hidden-col, 4) naked, 5) Off
 
@@ -137,8 +142,10 @@ All source code, build scripts & resources are included.
 * [y]-key		=> view toggle: Ywing (shows only 1st-found)
 
 * [c]-key		=> view toggle: xCycle (shows only 1st-found, searches bad, then good)
+* [C]-key		=> view toggle: xCycle (shows only 1st-found, searches good only)
 
-* [k]-key		=> view toggle: Key-Cell test of all cells until contradiction found
+* [k]-key		=> view toggle: Key-Cell test: If no cell selected, tests all cells until contradiction is found.
+						If you select a cell first, this limits Key-Cell test to selected cell.
 
 * [l]-key		=> view: multiple Linked-pairs-chains hilighted with alternating Red/Blue colors
 
@@ -224,7 +231,7 @@ To restart, type the executable name with no parameter.
 
 ## How to best use this tool:
 
-The general idea for solving any sudoku puzzle is to eliminate candidates in each cell down to one single.
+The general strategy for solving any sudoku puzzle is to minimize the candidates within each cell.
 
 Use the following ASUD-methods to work towards a solution:
 
@@ -235,7 +242,7 @@ Use the following ASUD-methods to work towards a solution:
 	* Xwing-view
 	* Linked-Pairs-view
 	* xCycle-view.
-* F-key: Flush all dups
+* f-key: Flush all dups
 * u-key: process all [Unique] singles: remove other candidates in same cell, then flush.
 
 -----------------------------------------------------------------------------------------------------
@@ -246,18 +253,18 @@ If new digit pairs or singles appear, you might be able to eliminate even more c
 
 -----------------------------------------------------------------------------------------------------
 
-### Digit-Doubles Box View
+### Digit-Doubles/Triples Box View
 
-* Digit-Doubles highlighted in Red.
-* Removable like digits aligned with box-pairs (pointing-pairs) are highlighted (Cyan).
+* Aligned Box-Digit-Doubles (pointing-pairs), and Triples (pointing triples) are colored Red.
+* Removable digits aligned with pointing-pairs or pointing-triples are Cyan.
 
 -----------------------------------------------------------------------------------------------------
 
 ### Digit-Doubles Row/Col View
 
-* Digit-Doubles highlighted in Red.
-* If a double occurs within a box, then other like digits in that box are removable and highlighted (Cyan).
-* You might also notice Xwing variants not handled by Xwing-view.
+* Aligned Digit-Doubles highlighted in Red.
+* If a double occurs within a box, then other like digits in that box are removable (Cyan).
+* Occasionally this view might allow you to notice Xwing variants not handled by Xwing-view.
 
 -----------------------------------------------------------------------------------------------------
 
@@ -293,7 +300,7 @@ Finally, chains that do not result in deletable digits are now skipped.
 
 -----------------------------------------------------------------------------------------------------
 
-### xCycle-View
+### xCycle-View [ c-key ]
 This view first looks for contradictory xCycles, which are somewhat similar to linked-pairs.
 This inconsistent-xCycle view shows a chain of digits with alternating 
 colors, where Blue represents ON and Red is OFF [in the forward direction]. If anything is 
@@ -309,6 +316,9 @@ any [Cyan-colored] deletable cells that can see both Blue & Red colored chain li
 Again, the console terminal lists the logical sequences of digit states.
 Note that a consistent sequence can be read backwards if one reverses the color 
 interpretations, i.e. Red=On, Blue=Off.
+
+The C-key [cap-C] searches only for consistent X-Cycles. This is mainly for algorithmic testing
+because the contradictory X-Cycle search often finds the same deletables, first.
 
 
 -----------------------------------------------------------------------------------------------------
@@ -334,6 +344,7 @@ One can easily find references online that give more complete definitions of the
 * Ywings
 
 -----------------------------------------------------------------------------------------------------
+
 All the techniques above will only solve the simpler puzzles.
 There exists very difficult ones that require advanced methods and insights...
 
@@ -371,6 +382,10 @@ Repeating this process should eventually solve the puzzle, in most cases.
 This new Key-Cell test can solve some [but not all] terribly hard puzzles.
 
 All cells are searched in lexicographic order and the first contradiction found is displayed. Typically, each application will expose new contradictions, until solved.
+
+Note that you can try selecting a cell before hitting the k-key to search **only** that one cell.
+One reason you might want to do this is to find the shortest logic chain that leads to a contradiction.
+Shorter chains are much easier to follow and appreciate.
 
 -----------------------------------------------------------------------------------------------------
 
@@ -485,6 +500,12 @@ A standalone sokoban solver, and a morse code tool are only found at the SourceF
 
 
 ## Revision History:
+
+
+**ver 1.0.9 -- 22jul2023**
+
+* Deleting removable candidates while viewing Linked-Pairs now works as expected.
+
 
 **ver 1.0.8 -- 19jul2023**
 
