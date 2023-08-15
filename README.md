@@ -30,23 +30,20 @@ https://github.com/fastrgv/Asud/releases/download/v1.1.1/sud30jul23.7z
 
 
 
+
 # ASUD: Ada Sudoku Assistant
 
 
 ## Most recent changes
 
 
-**ver 1.1.1 -- 30jul2023**
+**ver 1.1.2 -- 16aug2023**
 
-* Aligned Box Digit Doubles view (pointing-pairs) now includes aligned box digit triples (pointing-triples), and can be toggled on or off with the a-key.
-* Improved console output for consistent x-Cycles.
-* Minor change in f-key action.
-
-**ver 1.1.0 -- 26jul2023**
-
-* Fixed HiddenTriples error in ASUDX (lsudx).
-* Improved Hidden Quads/Triples/Pairs to distinguish between row/col/box views.
-* Now display boxPairs/boxTriples that were previously suppressed (to reduce clutter).
+* Removed most automatic flushes so updates & reloads are less confusing.
+* Added automatic flush after digit assertion, for more intuitive results.
+* Corrected a coding error that caused KeyCell aborts.
+* Naked Pairs/Triples/Quads now display Cyan removable digits, if any.
+* Improved messages & effectiveness of KeyCell search.
 
 
 More revision history is at end of this file.
@@ -109,16 +106,14 @@ All source code, build scripts & resources are included.
 
 * [h]-key		=> toggle this key Help menu
 
-
 * [f]-key		=> Flush: If no cell is selected, then for every cell with a single digit,
 						remove it from all other cells in its 3 houses.
-						If a cell is selected, it flushes just that one cell,
+						If a cell with a single digit is selected, it flushes just that cell,
 
-
-* [u]-key		=> processUniques: searches all houses
-						for a single occurrence of a given digit, then
+* [u]-key		=> processUniques: searches for cells with a single candidate,
+						and all houses for a single occurrence of a given digit, then
 						removes all other candidate digits in its cell,
-						and then performs a Flush operation on its other houses.
+						and then performs a Flush operation in all its houses.
 
 * [s]-key		=> Save puzzle state for later restart
 
@@ -131,11 +126,11 @@ All source code, build scripts & resources are included.
 * [m]-key		=> view toggle Minimal: hides most candidate digits except for 
 						singles(Green).
 
-* [p]-key		=> view toggle: Pairs: 1) hidden-box, 2) hidden-row, 3) hidden-col, 4) naked, 5) Off
+* [p]-key=> view toggle: Pairs: 1) hidden-box, 2) hidden-row, 3) hidden-col, 4) naked-R/C/B, 5) Off
 
-* [t]-key		=> view toggle: Triples: 1) hidden-box, 2) hidden-row, 3) hidden-col, 4) Naked, 5) Off
+* [t]-key=> view toggle: Triples: 1) hidden-box, 2) hidden-row, 3) hidden-col, 4) naked-R/C/B, 5) Off
 
-* [q]-key		=> view toggle: Quads: 1) hidden-box, 2) hidden-row, 3) hidden-col, 4) Naked, 5) Off
+* [q]-key=> view toggle: Quads: 1) hidden-box, 2) hidden-row, 3) hidden-col, 4) naked-R/C/B, 5) Off
 
 * [x]-key		=> view toggle: Xwing (shows only 1st-found; cyan implies removable)
 
@@ -144,8 +139,8 @@ All source code, build scripts & resources are included.
 * [c]-key		=> view toggle: xCycle (shows only 1st-found, searches bad, then good)
 * [C]-key		=> view toggle: xCycle (shows only 1st-found, searches good only)
 
-* [k]-key		=> view toggle: Key-Cell test: If no cell selected, tests all cells until contradiction is found.
-						If you select a cell first, this limits Key-Cell test to selected cell.
+* [k]-key		=> view toggle: Key-Cell test: If no cell selected, tests all cells until contradiction is found. 
+**If you select a cell first, this limits Key-Cell test to selected cell.**
 
 * [l]-key		=> view: multiple Linked-pairs-chains hilighted with alternating Red/Blue colors
 
@@ -153,9 +148,9 @@ All source code, build scripts & resources are included.
 
 --------------------------------------------------------------------------
 
+
 Notes:
 
-* Naked triples **within boxes** are NOT shown to reduce clutter. Same for naked quads & naked pairs.
 * The last 10 view-toggles are mutually exclusive: activating one deactivates others.
 * Linked-Pairs (l-key): each digit might have multiple chains of related pairs that are cycled 
 thru in order; (you can make a quick exit by pressing a different view-toggle key).
@@ -182,7 +177,7 @@ thru in order; (you can make a quick exit by pressing a different view-toggle ke
 
 Windows users can see additional details in "windows-setup.txt".
 
-Unzip the archive.  On Windows, 7z [www.7-zip.org] works well for this.
+Unzip the archive.  On Windows, 7z.exe [www.7-zip.org] works well for this.
 The proper command to extract the archive and maintain the directory structure is "7z x filename".
 
 Users may then open a terminal window, cd to install-directory, then, at the command line, type the executable name to start the tool. (the command **must** be run from the install-directory)
@@ -231,7 +226,18 @@ To restart, type the executable name with no parameter.
 
 ## How to best use this tool:
 
+There are 2 primary viewing modes controlled with the m-key: 
+1) candidate-view, and 2) minimal-view. The latter
+shows only known singles as well as cells with only a single candidate (in green).
+
 The general strategy for solving any sudoku puzzle is to minimize the candidates within each cell.
+After loading a puzzle, you will need to FlushAll, perhaps more than once, in order to
+properly initialize the candidates that are displayed. Each flush might expose new singles
+that subsequently need flushing, again. The automation of flushes has recently been
+reduced to a bare minimum to avoid confusion.
+
+Similarly, the unique singles key (u-key) frequently exposes new (green) singles with each press,
+so that mutliple presses might be needed. 
 
 Use the following ASUD-methods to work towards a solution:
 
@@ -274,8 +280,8 @@ particular digit. That means they are strongly connected in the sense that
 if one of them is OFF then the other must be ON.
 This view shows a chain of digit pairs with alternating colors 
 (nominally Red/Blue), where one color represents ON and the other OFF, 
-but we don't know which is which. Note that a chain of digit-pairs may form
-a tree structure of related digit-pairs, rather than a linear sequence.
+but we don't know which is which. **Note that a chain of digit-pairs may form
+a tree structure of related digit-pairs, rather than a linear sequence.**
 
 The Linked-Pairs view allows manual application of the following rules for elimination:
 
@@ -389,7 +395,24 @@ Shorter chains are much easier to follow and appreciate.
 
 -----------------------------------------------------------------------------------------------------
 
+### Guessing
+Most experts consider X-Cycles a valid solution technique. But the essence of contradictory
+X-Cycles is to hypothesize a particular digit in a given cell, then test the ramifications. When a
+contradiction is reached, the intitial hypothesis is found to be false. Thusly, I would call this a
+guessing technique. Same goes for my KeyCell method above.
 
+This is why guessing techniques may be acceptable to some.
+
+That said, I have found one puzzle, so far, that resides in the directory ~/puzzles/impossible/ that refuses
+to be solved without some sort of guessing. And here is the solution method for this type:
+
+* choose a cell with only 2 candidates. One works, and one fails. Save the puzzle state.
+* eliminate one, then use a combination of KeyCell or X-Cycle tests to fully ramify until reaching either a contradiction or solution.
+* if a contradiction occurs, you will see one or more empty cells; i.e. where all candidates have been eliminated. In this case, restore the saved puzzle state and choose the other candidate.
+
+This approach is repeatable, if necessary, but I have not yet found a sudoku puzzle where repeating is necessary.
+
+-----------------------------------------------------------------------------------------------------
 
 
 ## Build Requirements:
@@ -500,6 +523,20 @@ A standalone sokoban solver, and a morse code tool are only found at the SourceF
 
 
 ## Revision History:
+
+
+**ver 1.1.1 -- 30jul2023**
+
+* Aligned Box Digit Doubles view (pointing-pairs) now includes aligned box digit triples (pointing-triples), and can be toggled on or off with the a-key.
+* Improved console output for consistent x-Cycles.
+* Minor change in f-key action.
+
+**ver 1.1.0 -- 26jul2023**
+
+* Fixed HiddenTriples error in ASUDX (lsudx).
+* Improved Hidden Quads/Triples/Pairs to distinguish between row/col/box views.
+* Now display boxPairs/boxTriples that were previously suppressed (to reduce clutter).
+
 
 
 **ver 1.0.9 -- 22jul2023**
