@@ -17,6 +17,7 @@ Bad Key Cell Screen
 Bad Xcycle: remove 3 @ (2,2)
 
 ![screenshot](https://github.com/fastrgv/Asud/blob/main/hiddenPairs.png)
+
 Hidden Pairs
 
 ---------------------------------------------------------------------------
