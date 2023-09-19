@@ -40,6 +40,10 @@ https://github.com/fastrgv/Asud/releases/download/v1.1.2/sud16aug23.7z
 
 ## Most recent changes
 
+**ver 1.1.3 -- 20sep2023**
+
+* Augmented X-solver to display, not only digit-doubles but triples along the diagonals, as well as any removables they reveal. Shown whenever displaying digit-doubles [d-key] or aligned-digits [a-key].
+
 
 **ver 1.1.2 -- 16aug2023**
 
