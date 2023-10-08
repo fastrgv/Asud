@@ -35,10 +35,17 @@ https://github.com/fastrgv/Asud/releases/download/v1.1.3/sud20sep23.7z
 
 
 
+
 # ASUD: Ada Sudoku Assistant
 
 
 ## Most recent changes
+
+
+
+**ver 1.1.4 -- 10oct2023**
+
+* Added commandline build for Mac/OSX (no bundle)...built without using Xcode.
 
 **ver 1.1.3 -- 20sep2023**
 
@@ -93,7 +100,7 @@ This minimal display could allow easier pattern recognition.
 
 Sudoku fans that get stuck will find that this app can help 
 them to get a new perspective, using any PC or laptop.
-This package includes executables that run on Windows, and Linux.
+This package includes executables that run on Windows, OSX, and Linux.
 All source code, build scripts & resources are included.
 
 
@@ -172,7 +179,7 @@ thru in order; (you can make a quick exit by pressing a different view-toggle ke
 ## Features
 
 * F.O.S.S. (Free Open Source Software);
-* runs on Windows & Linux;  Linux binary runs on many distros!
+* runs on Windows, OSX, & Linux;  Linux binary runs on many distros!
 * uses GLFW3;
 * works on HiDPI displays;
 * no installation;
@@ -184,13 +191,23 @@ thru in order; (you can make a quick exit by pressing a different view-toggle ke
 ## Setup & execution:
 
 Windows users can see additional details in "windows-setup.txt".
+Mac users see "osx-setup.txt".
 
-Unzip the archive.  On Windows, 7z.exe [www.7-zip.org] works well for this.
-The proper command to extract the archive and maintain the directory structure is "7z x filename".
+Unzip the archive.  
+
+* On Linux & Windows, 7z [www.7-zip.org] works well for this. The proper command to extract the archive and maintain the directory structure is "7z x filename".
+
+* On OSX, Keka works well for 7Z files. The command-line for Keka is:
+	* /Applications/Keka.app/Contents/MacOS/Keka --cli 7z x (filename.7z)
+
+After the archive is unzipped...
 
 Users may then open a terminal window, cd to install-directory, then, at the command line, type the executable name to start the tool. (the command **must** be run from the install-directory)
 
 Let {fnam} indicate an optional input file-name...
+
+----------------------------------------------------------------------
+On OSX type "osud {fnam}"
 
 ----------------------------------------------------------------------
 In Linux type "lsud {fnam}".
@@ -424,16 +441,15 @@ This approach is repeatable, if necessary, but I have not yet found a sudoku puz
 
 
 ## Build Requirements:
-* systems:  Windows, or GNU/Linux
+* systems:  Windows, OSX, or GNU/Linux
 * a recent Ada compiler;  eg. GNU-Ada...try this link:
 	* https://github.com/alire-project/GNAT-FSF-builds/releases
 
 
 ## Build instructions:
 
-Two [pre-compiled] binary executables are delivered, one for Windows
-and one for linux. Both are fairly portable. Also remember that the
-Windows binary will run under WINE on Linux.
+Three [pre-compiled] binary executables are delivered. All are fairly portable. 
+Also remember that the Windows binary will run under WINE on Linux.
 
 Thus, for most people, rebuilding is unnecessary.
 
@@ -445,6 +461,9 @@ If you still want to rebuild, install Ada, then execute the following scripts:
 
 * linux =>
 	* lcmp.sh
+
+* osx =>
+	* ocmp.sh
 
 Note that these scripts might need to be adjusted to reference 
 your actual installation directory for the 64bit GNU Ada compiler.
@@ -461,9 +480,10 @@ because the 2 diagonals are also houses.
 They display the first-found solution to the screen:
 
 * wsol.bat {filename} (on Windows)
-* susolve  {filename} (on Linux)
+* lsol  {filename} (on Linux)
+* osol  {filename} (on osx)
 
-For X-sudokus use wsolx.bat/susolvex.
+For X-sudokus use wsolx.bat/lsolx/osolx.
 
 -------------------------------------------------------------------------
 
@@ -479,7 +499,7 @@ My original intent in writing this app was to avoid the optical drudgery of disc
 
 ## what is special about this project?
 
-Uses the Ada programming language and modern OpenGL methods, with textures, shaders and uniforms.  Compiles and runs on Windows and GNU/Linux.
+Uses the Ada programming language and modern OpenGL methods, with textures, shaders and uniforms.  Compiles and runs on Windows, OSX, and GNU/Linux.
 
 Focusing on portability, transparency, and open source freedom, this project relies exclusively on F.O.S.S. tools:  a thin GLFW3 binding, a thin OpenGL binding, a PNG reader by Stephen Sanguine & Dimitry Anisimkov, and a GNU-Ada compiler.
 
