@@ -396,6 +396,12 @@ to a logical contradiction. If so, the digit is shown in Cyan, indicating it sho
 A contradiction eventually appears in the form of a cell that would become empty, outlined in blue.
 The logic sequence for that contradiction appears in the terminal window.
 
+During this test, any values shown in blue (singles) are definitely ON, while values shown in orange
+are definitely OFF. The blue & orange values are the result of the hypothesized initial digit.
+If a cell contains only orange digits, then it is colored with a blue outline because all
+of its digits have been ruled out; AND since an empty cell is a contradiction, the original 
+hypothesized digit is shown in a CYAN color.
+
 If no blue cells appear, then no contradictions were found and you will have to try something else. 
 **Key-Cell** is a cheap equivalent to a combination of advanced methods (like 3Dmedusa, 
 Alternate-Inference-Chain, Hidden-Unique-Rectangle, etc.), all of which assume a single digit in a 
