@@ -42,6 +42,7 @@ https://github.com/fastrgv/Asud/releases/download/v1.1.4/sud8oct23.7z
 
 
 
+
 # ASUD: Ada Sudoku Assistant
 
 
@@ -49,22 +50,10 @@ https://github.com/fastrgv/Asud/releases/download/v1.1.4/sud8oct23.7z
 
 
 
-**ver 1.1.4 -- 10oct2023**
+**ver 1.1.5 -- 17apr2024**
 
-* Added commandline build for Mac/OSX (no bundle)...built without using Xcode.
-
-**ver 1.1.3 -- 20sep2023**
-
-* Augmented X-solver to display, not only digit-doubles but triples along the diagonals, as well as any removables they reveal. Shown whenever displaying digit-doubles [d-key] or aligned-digits [a-key].
-
-
-**ver 1.1.2 -- 16aug2023**
-
-* Removed most automatic flushes so updates & reloads are less confusing.
-* Added automatic flush after digit assertion, for more intuitive results.
-* Corrected a coding error that caused KeyCell aborts.
-* Naked Pairs/Triples/Quads now display Cyan removable digits, if any.
-* Improved messages & effectiveness of KeyCell search.
+* The (m)-key now toggles a manual-candidate mode, more like typical online sudoku solving tools,
+that makes easy puzzles much more fun.
 
 
 More revision history is at end of this file.
@@ -99,10 +88,8 @@ facilitate the removal of as many candidate digits as possible.
 Algorithms have been added to detect and display hidden (or naked) pairs, triples, & quads,
 whose display can be toggled.
 
-The default display shows all candidate digits in the center of each cell. 
-However, one can toggle a Minimal view that just shows 
-a) known singles, b) aligned box-digit-pairs.
-This minimal display could allow easier pattern recognition.
+The default display shows automatically calculated candidate digits in the center of each cell. 
+For simple puzzles, one can toggle a Manual mode that just shows manually-inserted pen or pencil mark numerals.
 
 Sudoku fans that get stuck will find that this app can help 
 them to get a new perspective, using any PC or laptop.
@@ -116,36 +103,38 @@ All source code, build scripts & resources are included.
 
 * mouse-click 	=> select/Deselect one of 81 cells from among 9x9 array to edit
 
-* [1..9]-key	=> toggle candidate numeral n within selected cell
+* [1..9]-key	=> toggle candidate numeral n within selected cell ("pencil" mark)
 
-* [ctrl]+[1..9] => assert numeral n within selected cell
+* [ctrl]+[1..9] => assert a unique single numeral n within selected cell ("Pen" mark)
 
 * [esc]-key		=> Quit
 
-* [a]-key		=> toggle Aligned Box Digit Doubles (Red) with Cyan deletables.
-* [n]-key		=> toggle Nonaligned Box Digit Doubles (Purple)...utility doubtful.
-
 * [h]-key		=> toggle this key Help menu
 
-* [f]-key		=> Flush: If no cell is selected, then for every cell with a single digit,
+* [m]-key		=> toggles between Auto-candidate and Manual-candidate mode.
+						Manual mode shows only manually entered candidates (pencil-marks)
+						or manually asserted unique singles (pen-marks)
+						and disables advanced function keys: {a,n,u,p,t,q,x,y,c,k,l,d}
+
+* [s]-key		=> Save puzzle state for later restart
+
+* [r]-key		=> Restore (using data from previous save)
+
+* [f]-key		=> Flush: If no cell is selected, then for every cell with a unique single digit,
 						remove it from all other cells in its 3 houses.
 						If a cell with a single digit is selected, it flushes just that cell,
+
+------------------------- auto-candidate-mode ftns below -------------------------------------------------
 
 * [u]-key		=> processUniques: searches for cells with a single candidate,
 						and all houses for a single occurrence of a given digit, then
 						removes all other candidate digits in its cell,
 						and then performs a Flush operation in all its houses.
 
-* [s]-key		=> Save puzzle state for later restart
-
-* [r]-key		=> Restore (using data from previous save)
+* [a]-key		=> toggle Aligned Box Digit Doubles (Red) with Cyan deletables.
+* [n]-key		=> toggle Nonaligned Box Digit Doubles (Purple)...utility doubtful.
 
 * [b]-key		=> toggle a Brute-Force solver to find & show [first] solution
-
---------------------------------------------------------------------------
-
-* [m]-key		=> view toggle Minimal: hides most candidate digits except for 
-						singles(Green).
 
 * [p]-key=> view toggle: Pairs: 1) hidden-box, 2) hidden-row, 3) hidden-col, 4) naked-R/C/B, 5) Off
 
@@ -161,7 +150,7 @@ All source code, build scripts & resources are included.
 * [C]-key		=> view toggle: xCycle (shows only 1st-found, searches good only)
 
 * [k]-key		=> view toggle: Key-Cell test: If no cell selected, tests all cells until contradiction is found. 
-**If you select a cell first, this limits Key-Cell test to selected cell.**
+**You may select a cell first, to limit Key-Cell test to selected cell.**
 
 * [l]-key		=> view: multiple Linked-pairs-chains hilighted with alternating Red/Blue colors
 
@@ -208,9 +197,9 @@ Unzip the archive.
 
 After the archive is unzipped...
 
-Users may then open a terminal window, cd to install-directory, then, at the command line, type the executable name to start the tool. (the command **must** be run from the install-directory)
+Users may then open a terminal window, cd to install-directory, then, at the command line, type the executable name to start the tool. (the command **must** be run from the install-directory) ...
 
-Let {fnam} indicate an optional input file-name...
+Let {fnam} indicate an optional input file-name. Then
 
 ----------------------------------------------------------------------
 On OSX type "osud {fnam}"
@@ -247,7 +236,7 @@ Then simply type the command name followed by the input file name.
 ...
 
 After working with the tool and eliminating as many candidate digits as possible,
-one can save the state using the "s" key. This creates the file: frestore.txt
+one can save the state using the "s" key. This creates the file: frestoreB.txt
 
 To restart, type the executable name with no parameter.
 
@@ -257,9 +246,16 @@ To restart, type the executable name with no parameter.
 
 ## How to best use this tool:
 
-There are 2 primary viewing modes controlled with the m-key: 
-1) candidate-view, and 2) minimal-view. The latter
-shows only known singles as well as cells with only a single candidate (in green).
+The 2 primary viewing modes are toggled with the m-key: 
+1) auto-candidate (default), and 2) manual-mode (beta-test). 
+
+The manual mode makes easy puzzles more fun by disabling most of the advanced functions. 
+Manual mode is very intuitive and similar to typical online sudoku-solving tools,
+except it has auto-flush when a single numeral is asserted. Testing for this mode is still ongoing,
+so I'm not yet sure that all error conditions are handled well. (In auto-candidate mode, 
+simpler puzzles are too easily solved, and all the fun is lost.)
+
+The remaining descriptions refer to the default auto-candidate mode, for difficult puzzles.
 
 The general strategy for solving any sudoku puzzle is to minimize the candidates within each cell.
 After loading a puzzle, you will need to FlushAll, perhaps more than once, in order to
@@ -287,6 +283,8 @@ The hidden pairs/triples/quads tool allows particularly easy removal of excess c
 Simply remove the Cyan digits in each involved cell.
 
 If new digit pairs or singles appear, you might be able to eliminate even more candidates.
+
+**Note that known removable digits are generally displayed using a cyan color**
 
 -----------------------------------------------------------------------------------------------------
 
@@ -382,8 +380,8 @@ One can easily find references online that give more complete definitions of the
 
 -----------------------------------------------------------------------------------------------------
 
-All the techniques above will only solve the simpler puzzles.
-There exists very difficult ones that require advanced methods and insights...
+All the techniques above will only solve the moderately difficult puzzles.
+There exists extreme puzzles that require advanced methods and insights...
 
 -----------------------------------------------------------------------------------------------------
 
@@ -403,8 +401,8 @@ of its digits have been ruled out; AND since an empty cell is a contradiction, t
 hypothesized digit is shown in a CYAN color.
 
 If no blue cells appear, then no contradictions were found and you will have to try something else. 
-**Key-Cell** is a cheap equivalent to a combination of advanced methods (like 3Dmedusa, 
-Alternate-Inference-Chain, Hidden-Unique-Rectangle, etc.), all of which assume a single digit in a 
+**Key-Cell** is a generalization of advanced methods (like 3Dmedusa, Alternate-Inference-Chain, 
+Hidden-Unique-Rectangle, etc.), all of which assume a single digit in a 
 particular cell, followed by a chain of inferences leading to a contradiction.
 
 The logical sequence of hypothetical new (BLUE) singles followed by the resulting deletions (Orange) is
@@ -440,12 +438,15 @@ guessing technique. Same goes for my KeyCell method above.
 
 This is why guessing techniques may be acceptable to some.
 
-That said, I have found one puzzle, so far, that resides in the directory ~/puzzles/impossible/ that refuses
-to be solved without some sort of guessing. And here is the solution method for this type:
+That said, I have found 3 puzzles, so far, that reside in the directory ~/puzzles/impossible/ 
+that refuse to be solved without some sort of guessing. And here is the solution method for this type:
 
-* choose a cell with only 2 candidates. One works, and one fails. Save the puzzle state.
-* eliminate one, then use a combination of KeyCell or X-Cycle tests to fully ramify until reaching either a contradiction or solution.
-* if a contradiction occurs, you will see one or more empty cells; i.e. where all candidates have been eliminated. In this case, restore the saved puzzle state and choose the other candidate.
+* Save the puzzle state.
+* choose a cell with only 2 candidates. One works, and one fails.
+* eliminate one, then use a combination of KeyCell or X-Cycle tests to fully ramify until reaching 
+either a contradiction or solution.
+* if a contradiction occurs, you will see one or more empty cells; i.e. where all candidates have 
+been eliminated. In this case, restore the saved puzzle state and choose the other candidate.
 
 This approach is repeatable, if necessary, but I have not yet found a sudoku puzzle where repeating is necessary.
 
@@ -484,8 +485,8 @@ your actual installation directory for the 64bit GNU Ada compiler.
 
 ## Final Notes
 
-1) An X-sudoku tool lsudx (asudx.adb) with similar capabilities & interface
-is included. In this type of puzzle, each cell can be in either 3 or 4 houses, 
+1) X-sudoku tools [wsudx.bat,osudx,lsudx] (asudx.adb) with similar capabilities & interface
+are also included. In this type of puzzle, each cell can be in either 3 or 4 houses, 
 because the 2 diagonals are also houses.
 
 2) Brute-force solvers [susolve/susolvex] are also included under ./bruteForceSolver/. 
@@ -497,12 +498,17 @@ They display the first-found solution to the screen:
 
 For X-sudokus use wsolx.bat/lsolx/osolx.
 
+3) A fair variety of puzzles can be found in the directories:
+	.) ./puzzles/*.txt (see descriptions @ bottom for difficulty level)
+	.) ./puzzles/extreme/*.txt
+	.) ./puzzles/impossible/*.txt
+	.) Xpuz/*.txt
+
 -------------------------------------------------------------------------
 
 ## TBD list:
 * Input puzzle handling is primitive.
 * User interface is spartan.
-* Could be better at facilitating fun & the human discovery process.
 
 ## Summary:
 My original intent in writing this app was to avoid the optical drudgery of discovering unique singles or hidden triples/quads. But since then I have watched some inspiring videos on how a Sudoku tool could enhance the fun of puzzle solving. Watch for [improved] future releases!
@@ -530,7 +536,7 @@ fastrgv@gmail.com
 asud itself is covered by the GNU GPL v3 as indicated in the sources:
 
 
- Copyright (C) 2023  <fastrgv@gmail.com>
+ Copyright (C) 2024  <fastrgv@gmail.com>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -564,28 +570,34 @@ A standalone sokoban solver, and a morse code tool are only found at the SourceF
 
 ## Revision History:
 
+**ver 1.1.4 -- 10oct2023**
+* Added commandline build for Mac/OSX (no bundle)...built without using Xcode.
+* [20feb24] clarified explanation of KeyCell operation (k-key).
+
+**ver 1.1.3 -- 20sep2023**
+* Augmented X-solver to display, not only digit-doubles but triples along the diagonals, as well as any removables they reveal. Shown whenever displaying digit-doubles [d-key] or aligned-digits [a-key].
+
+**ver 1.1.2 -- 16aug2023**
+* Removed most automatic flushes so updates & reloads are less confusing.
+* Added automatic flush after digit assertion, for more intuitive results.
+* Corrected a coding error that caused KeyCell aborts.
+* Naked Pairs/Triples/Quads now display Cyan removable digits, if any.
+* Improved messages & effectiveness of KeyCell search.
 
 **ver 1.1.1 -- 30jul2023**
-
 * Aligned Box Digit Doubles view (pointing-pairs) now includes aligned box digit triples (pointing-triples), and can be toggled on or off with the a-key.
 * Improved console output for consistent x-Cycles.
 * Minor change in f-key action.
 
 **ver 1.1.0 -- 26jul2023**
-
 * Fixed HiddenTriples error in ASUDX (lsudx).
 * Improved Hidden Quads/Triples/Pairs to distinguish between row/col/box views.
 * Now display boxPairs/boxTriples that were previously suppressed (to reduce clutter).
 
-
-
 **ver 1.0.9 -- 22jul2023**
-
 * Deleting removable candidates while viewing Linked-Pairs now works as expected.
 
-
 **ver 1.0.8 -- 19jul2023**
-
 * Minor color changes for greater uniformity.
 * Fixed X-Cycle logic for Sudoku-X (lsudx).
 * Removed some unused code.
@@ -594,9 +606,7 @@ A standalone sokoban solver, and a morse code tool are only found at the SourceF
 * LinkedPairs now displays all deletable digits in Cyan.
 * LinkedPairs now skips chains with no deletable digits.
 
-
 **ver 1.0.7 -- 12jul2023**
-
 * Changed highlight colors;  now more uniform with deletable digits Cyan.
 * Hidden pairs/triples/quads now color deletable digits Cyan.
 * Better terminal messaging.
@@ -607,7 +617,6 @@ A standalone sokoban solver, and a morse code tool are only found at the SourceF
 
 
 **ver 1.0.6 -- 1jul2023**
-
 * Fixed error in Xsudoku keyboard code.
 * Improved action in xCycle-view.
 * Added quick [non-modal] method to emplace a single into a selected cell using (ctrl)+(dig)
@@ -615,42 +624,30 @@ A standalone sokoban solver, and a morse code tool are only found at the SourceF
 
 
 **ver 1.0.5 -- 28jun2023**
-
 * Simplified Digit-Doubles display. Now easier to spot deletable candidates.
 * Added Xwing view.
 * Clarified xCycle view to show alternating on/off colors.
 
 **ver 1.0.4 -- 23jun2023**
-
 * Added K-key to perform Key-Cell test on every cell until a contradiction is found.
 * Decluttered & minimized console output for Key-Cell tests.
 * Other coding improvements.
 
 **ver 1.0.3 -- 17jun2023**
-
 * Fully expanded Key-Cell test (k-key) to allow selecting any cell.
 
 **ver 1.0.2 -- 12jun2023**
-
 * Improved & expanded Key-Cell test (k-key) now allows selecting cells with either 2 or 3 entries.
 * Augmented action of Flush keys: f-key flushes a selected cell; F-key flushes all cells.
 * Augmented action of Unique keys: u-key merely displays all singles (green); U-key clears & flushes all singles.
 
 **ver 1.0.1 -- 1jun2023**
-
 * Corrections to documentation.
 * Enhancements to displays, keymap.
 * Replace "="-key with 3-way d-key for house digit-doubles.
 * Improved k-key console-terminal explanations.
 
 **ver 1.0.0 -- 25may2023**
-
 * Initial release.
-
-
-
-
-
-
 
 
