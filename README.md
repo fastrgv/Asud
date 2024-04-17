@@ -49,8 +49,12 @@ https://github.com/fastrgv/Asud/releases/download/v1.1.5/sud16apr24.7z
 ## Most recent changes
 
 
+**ver 1.1.6 -- 17apr2024**
 
-**ver 1.1.5 -- 17apr2024**
+* Corrected error in asudx.adb that caused failure when using k-key or b-key.
+
+
+**ver 1.1.5 -- 16apr2024**
 
 * The (m)-key now toggles a manual-candidate mode, more like typical online sudoku solving tools,
 that makes easy puzzles much more fun.
