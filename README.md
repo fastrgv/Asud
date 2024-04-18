@@ -43,10 +43,17 @@ https://github.com/fastrgv/Asud/releases/download/v1.1.5/sud17apr24.7z
 
 
 
+
 # ASUD: Ada Sudoku Assistant
 
 
 ## Most recent changes
+
+
+
+**ver 1.1.7 -- 19apr2024**
+
+* No longer aborts when user makes an invalid assertion.
 
 
 **ver 1.1.6 -- 17apr2024**
@@ -110,6 +117,7 @@ All source code, build scripts & resources are included.
 * [1..9]-key	=> toggle candidate numeral n within selected cell ("pencil" mark)
 
 * [ctrl]+[1..9] => assert a unique single numeral n within selected cell ("Pen" mark)
+						If an invalid assertion is detected, a terminal message now says "Bad Assertion".
 
 * [esc]-key		=> Quit
 
@@ -258,6 +266,8 @@ Manual mode is very intuitive and similar to typical online sudoku-solving tools
 except it has auto-flush when a single numeral is asserted. Testing for this mode is still ongoing,
 so I'm not yet sure that all error conditions are handled well. (In auto-candidate mode, 
 simpler puzzles are too easily solved, and all the fun is lost.)
+
+**FTTB, the complexity of the new superimposed manual-mode has unfortunately increased the chances of aborts. Please save often.**
 
 The remaining descriptions refer to the default auto-candidate mode, for difficult puzzles.
 
@@ -511,11 +521,12 @@ For X-sudokus use wsolx.bat/lsolx/osolx.
 -------------------------------------------------------------------------
 
 ## TBD list:
+* Occasional unhandled aborts might happen. Save often.
 * Input puzzle handling is primitive.
 * User interface is spartan.
 
 ## Summary:
-My original intent in writing this app was to avoid the optical drudgery of discovering unique singles or hidden triples/quads. But since then I have watched some inspiring videos on how a Sudoku tool could enhance the fun of puzzle solving. Watch for [improved] future releases!
+My original intent in writing this app was to avoid the optical drudgery of discovering unique singles or hidden triples/quads. But since then I have watched some inspiring videos on how a Sudoku tool could enhance the fun of puzzle solving. Watch for future improvements!
 
 ----------------------------------------------
 
@@ -532,6 +543,7 @@ Open source Ada developers are welcome to help improve or extend this app.
 Developer or not, Sudoku fans can send comments, suggestions or questions to:
 fastrgv@gmail.com
 
+In particular, I would greatly appreciate hearing about any repeatable problems. I only have one tester, me; and I seldom type unexpected keys.
 
 
 ===================================================================
