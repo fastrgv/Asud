@@ -50,6 +50,10 @@ https://github.com/fastrgv/Asud/releases/download/v1.1.7/sud19apr24.7z
 ## Most recent changes
 
 
+**ver 1.1.8 -- 26apr2024**
+
+* Assertions no longer obstruct manual saves.
+
 
 **ver 1.1.7 -- 19apr2024**
 
