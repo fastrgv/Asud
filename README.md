@@ -49,6 +49,10 @@ https://github.com/fastrgv/Asud/releases/download/v1.1.8/sud26apr24.7z
 
 ## Most recent changes
 
+**ver 1.1.9 -- 30apr2024**
+
+* Fixed aborts when typing a number without selecting a cell first.
+
 
 **ver 1.1.8 -- 26apr2024**
 
