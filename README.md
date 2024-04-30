@@ -25,7 +25,7 @@ Hidden Pairs
 
 Here is the link to the latest release, which includes all source:
 
-https://github.com/fastrgv/Asud/releases/download/v1.1.8/sud26apr24.7z
+https://github.com/fastrgv/Asud/releases/download/v1.1.9/sud30apr24.7z
 
 
 
