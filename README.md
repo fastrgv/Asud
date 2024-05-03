@@ -44,35 +44,19 @@ https://github.com/fastrgv/Asud/releases/download/v1.1.9/sud30apr24.7z
 
 
 
+
 # ASUD: Ada Sudoku Assistant
 
 
 ## Most recent changes
 
-**ver 1.1.9 -- 30apr2024**
-
-* Fixed aborts when typing a number without selecting a cell first.
 
 
-**ver 1.1.8 -- 26apr2024**
+**ver 1.2.0 -- 03may2024**
 
-* Assertions no longer obstruct manual saves.
-
-
-**ver 1.1.7 -- 19apr2024**
-
-* No longer aborts when user makes an invalid assertion.
-
-
-**ver 1.1.6 -- 17apr2024**
-
-* Corrected error in asudx.adb that caused failure when using k-key or b-key.
-
-
-**ver 1.1.5 -- 16apr2024**
-
-* The (m)-key now toggles a manual-candidate mode, more like typical online sudoku solving tools,
-that makes easy puzzles much more fun.
+* Enabled 8-level-undo for assertions.
+* Decluttered root directory by putting helper files elsewhere.
+* Save now preserves mode, too.
 
 
 More revision history is at end of this file.
@@ -122,10 +106,12 @@ All source code, build scripts & resources are included.
 
 * mouse-click 	=> select/Deselect one of 81 cells from among 9x9 array to edit
 
-* [1..9]-key	=> toggle candidate numeral n within selected cell ("pencil" mark)
+* [1..9]-key	=> toggle candidate numeral n in selected cell (aka "pencil" mark)
 
-* [ctrl]+[1..9] => assert a unique single numeral n within selected cell ("Pen" mark)
-						If an invalid assertion is detected, a terminal message now says "Bad Assertion".
+* [ctrl]+[1..9] => assert a unique single numeral n in selected cell (aka "Pen" mark)
+
+* [e]-key		=> Erase/undo most recent pen-mark (assertion); Limited to 8 most recent.
+					The number of remaining Undo's is written to the terminal window.
 
 * [esc]-key		=> Quit
 
@@ -144,7 +130,7 @@ All source code, build scripts & resources are included.
 						remove it from all other cells in its 3 houses.
 						If a cell with a single digit is selected, it flushes just that cell,
 
-------------------------- auto-candidate-mode ftns below -------------------------------------------------
+------------------------- auto-candidate-mode ftns below ---------------------------------------
 
 * [u]-key		=> processUniques: searches for cells with a single candidate,
 						and all houses for a single occurrence of a given digit, then
@@ -273,7 +259,7 @@ The manual mode makes easy puzzles more fun by disabling most of the advanced fu
 Manual mode is very intuitive and similar to typical online sudoku-solving tools,
 except it has auto-flush when a single numeral is asserted. Testing for this mode is still ongoing,
 so I'm not yet sure that all error conditions are handled well. (In auto-candidate mode, 
-simpler puzzles are too easily solved, and all the fun is lost.)
+simpler puzzles are too easily solved, and much of the fun is lost.)
 
 **FTTB, the complexity of the new superimposed manual-mode has unfortunately increased the chances of aborts. Please save often.**
 
@@ -463,14 +449,12 @@ This is why guessing techniques may be acceptable to some.
 That said, I have found 3 puzzles, so far, that reside in the directory ~/puzzles/impossible/ 
 that refuse to be solved without some sort of guessing. And here is the solution method for this type:
 
-* Save the puzzle state.
 * choose a cell with only 2 candidates. One works, and one fails.
-* eliminate one, then use a combination of KeyCell or X-Cycle tests to fully ramify until reaching 
-either a contradiction or solution.
+* assert one, then use a combination of KeyCell or X-Cycle tests until reaching either a contradiction or solution.
 * if a contradiction occurs, you will see one or more empty cells; i.e. where all candidates have 
-been eliminated. In this case, restore the saved puzzle state and choose the other candidate.
+been eliminated. In this case use the e-key to restore the puzzle state prior to the assertion; then assert the other candidate.
 
-This approach is repeatable, if necessary, but I have not yet found a sudoku puzzle where repeating is necessary.
+This approach is recursively repeatable, if necessary, but I have not yet found a sudoku puzzle where more than one assertion was necessary to reach either a contradiction or a solution.
 
 -----------------------------------------------------------------------------------------------------
 
@@ -593,6 +577,23 @@ A standalone sokoban solver, and a morse code tool are only found at the SourceF
 
 
 ## Revision History:
+
+
+**ver 1.1.9 -- 30apr2024**
+* Fixed aborts when typing a number without selecting a cell first.
+
+**ver 1.1.8 -- 26apr2024**
+* Assertions no longer obstruct manual saves.
+
+**ver 1.1.7 -- 19apr2024**
+* No longer aborts when user makes an invalid assertion.
+
+**ver 1.1.6 -- 17apr2024**
+* Corrected error in asudx.adb that caused failure when using k-key or b-key.
+
+**ver 1.1.5 -- 16apr2024**
+* The (m)-key now toggles a manual-candidate mode, more like typical online sudoku solving tools,
+that makes easy puzzles much more fun.
 
 **ver 1.1.4 -- 10oct2023**
 * Added commandline build for Mac/OSX (no bundle)...built without using Xcode.
