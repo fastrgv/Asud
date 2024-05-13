@@ -39,17 +39,22 @@ https://github.com/fastrgv/Asud/releases/download/v1.2.0/sud3may24.7z
 
 
 
-
-
-
-
-
-
 # ASUD: Ada Sudoku Assistant
 
 
 ## Most recent changes
 
+
+
+**ver 1.2.1 -- 14may2024**
+
+* Improved terminal messages.
+* Improved transitions between auto-candidate and manual mode.
+* Reduced external file usage.
+* Improved the Kcell removable-digit search algorithm.
+* Minor change to key maps...
+	* (u)-key : Undo last assert.
+	* (.)-key : search for unique singles.
 
 
 **ver 1.2.0 -- 03may2024**
@@ -108,9 +113,9 @@ All source code, build scripts & resources are included.
 
 * [1..9]-key	=> toggle candidate numeral n in selected cell (aka "pencil" mark)
 
-* [ctrl]+[1..9] => assert a unique single numeral n in selected cell (aka "Pen" mark)
+* [ctrl]+[1..9] => assert a single numeral n in selected cell (aka "Pen" mark)
 
-* [e]-key		=> Erase/undo most recent pen-mark (assertion); Limited to 8 most recent.
+* [u]-key		=> Undo most recent pen-mark (assertion); Limited to 8 most recent.
 					The number of remaining Undo's is written to the terminal window.
 
 * [esc]-key		=> Quit
@@ -132,13 +137,12 @@ All source code, build scripts & resources are included.
 
 ------------------------- auto-candidate-mode ftns below ---------------------------------------
 
-* [u]-key		=> processUniques: searches for cells with a single candidate,
-						and all houses for a single occurrence of a given digit, then
-						removes all other candidate digits in its cell,
-						and then performs a Flush operation in all its houses.
+* [.]-key		=> search for, assert, & flush: cells with a single candidate, and houses
+						with a single occurrence of a given digit.
 
 * [a]-key		=> toggle Aligned Box Digit Doubles (Red) with Cyan deletables.
 * [n]-key		=> toggle Nonaligned Box Digit Doubles (Purple)...utility doubtful.
+
 
 * [b]-key		=> toggle a Brute-Force solver to find & show [first] solution
 
@@ -148,19 +152,18 @@ All source code, build scripts & resources are included.
 
 * [q]-key=> view toggle: Quads: 1) hidden-box, 2) hidden-row, 3) hidden-col, 4) naked-R/C/B, 5) Off
 
-* [x]-key		=> view toggle: Xwing (shows only 1st-found; cyan implies removable)
+* [x]-key		=> toggle: Xwing (shows only 1st-found; cyan implies removable)
 
-* [y]-key		=> view toggle: Ywing (shows only 1st-found)
+* [y]-key		=> toggle: Ywing (shows only 1st-found)
 
-* [c]-key		=> view toggle: xCycle (shows only 1st-found, searches bad, then good)
-* [C]-key		=> view toggle: xCycle (shows only 1st-found, searches good only)
+* [c]-key		=> toggle: xCycle (shows only 1st-found, searches bad, then good)
 
-* [k]-key		=> view toggle: Key-Cell test: If no cell selected, tests all cells until contradiction is found. 
-**You may select a cell first, to limit Key-Cell test to selected cell.**
+* [k]-key		=> toggle: Key-Cell test: If no cell selected, tests all cells until contradiction is found.
+					**You may select a cell first, to limit Key-Cell test to selected cell.**
 
-* [l]-key		=> view: multiple Linked-pairs-chains hilighted with alternating Red/Blue colors
+* [l]-key		=> toggle: multiple Linked-pairs-chains hilighted with alternating Red/Blue colors
 
-* [d]-key		=> view toggle: Digit-Doubles: 1) box, 2) row, 3) col, 4) Off
+* [d]-key		=> toggle: Digit-Doubles: 1) box, 2) row, 3) col, 4) Off
 
 --------------------------------------------------------------------------
 
@@ -386,6 +389,7 @@ One can easily find references online that give more complete definitions of the
 * Xwings
 * Ywings
 
+
 -----------------------------------------------------------------------------------------------------
 
 All the techniques above will only solve the moderately difficult puzzles.
@@ -393,12 +397,29 @@ There exists extreme puzzles that require advanced methods and insights...
 
 -----------------------------------------------------------------------------------------------------
 
-### Key-Cell-View
-This is the sledge hammer.
+### Key-Cell-View using the k-key
+
+This is a powerful tool that can be used in 2 ways.
+
+---------------------------------------------------------------------------------------------
+**Firstly,** if you select a cell before hitting the k-key, then it operates **only** on the selected cell.
+It tries asserting each candidate in the cell to find whether it leads to a contradiction
+that can identify a deletable digit. Look for a shortest chain of logic 
+by selecting various different cells with a small number of candidates. 
+Short logic chains are much easier to follow and appreciate. If contradictions are found, 
+deletable digits are hilighted in a Cyan color. 
+Think of this as a generalized Ywing algorithm, and use it as such.
+
+---------------------------------------------------------------------------------------------
+**Secondly,** the full-powered version is initiated by the same k-key, but without selecting a cell 
+first. It searches all cells in lexicographic order until it finds removable digits, or fails.
+
+#### Further details of Key-Cell
+
 If you have reduced the candidates as much as possible with other methods, but still
-need help then use the k-key. This, last-resort
-**Key-Cell** test searches the ramifications of selecting each digit in each cell, which might lead
-to a logical contradiction. If so, the digit is shown in Cyan, indicating it should be removed.
+need help then use the k-key. This, last-resort **Key-Cell** test searches the ramifications 
+of selecting each digit in each cell, which might lead to a logical contradiction. 
+If so, the digit is shown in Cyan, indicating it should be removed.
 A contradiction eventually appears in the form of a cell that would become empty, outlined in blue.
 The logic sequence for that contradiction appears in the terminal window.
 
@@ -431,10 +452,6 @@ Repeating this process should eventually solve the puzzle, in most cases.
 This new Key-Cell test can solve some [but not all] terribly hard puzzles.
 
 All cells are searched in lexicographic order and the first contradiction found is displayed. Typically, each application will expose new contradictions, until solved.
-
-Note that you can try selecting a cell before hitting the k-key to search **only** that one cell.
-One reason you might want to do this is to find the shortest logic chain that leads to a contradiction.
-Shorter chains are much easier to follow and appreciate.
 
 -----------------------------------------------------------------------------------------------------
 
@@ -509,6 +526,9 @@ For X-sudokus use wsolx.bat/lsolx/osolx.
 	.) ./puzzles/extreme/*.txt
 	.) ./puzzles/impossible/*.txt
 	.) Xpuz/*.txt
+
+
+4) Note that this software knows when a bad assertion is made but it does not prevent it or flag it unless it causes an immediate and obvious contradiction in the form of an empty candidate list in one or more cells. Moreover, the limited erase function will not always get you out of trouble. The only safe way forward is to manually save the puzzle prior to making an assertion that turns out wrong.
 
 -------------------------------------------------------------------------
 
