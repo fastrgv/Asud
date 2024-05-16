@@ -45,6 +45,10 @@ https://github.com/fastrgv/Asud/releases/download/v1.2.1/su14may24.7z
 ## Most recent changes
 
 
+**ver 1.2.2 -- 17may2024**
+
+* Improved Kcell function: now finds & displays simplest assert contradictions.
+
 
 **ver 1.2.1 -- 14may2024**
 
