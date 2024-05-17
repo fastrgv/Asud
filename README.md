@@ -459,6 +459,7 @@ All cells are searched in lexicographic order and the first contradiction found 
 
 -----------------------------------------------------------------------------------------------------
 
+
 ### Guessing
 Most experts consider X-Cycles a valid solution technique. But the essence of contradictory
 X-Cycles is to hypothesize a particular digit in a given cell, then test the ramifications. When a
@@ -468,14 +469,22 @@ guessing technique. Same goes for my KeyCell method above.
 This is why guessing techniques may be acceptable to some.
 
 That said, I have found 3 puzzles, so far, that reside in the directory ~/puzzles/impossible/ 
-that refuse to be solved without some sort of guessing. And here is the solution method for this type:
+that refuse to be solved using KeyCell alone, without some sort of guessing. And here is the solution method for this type:
 
-* choose a cell with only 2 candidates. One works, and one fails.
-* assert one, then use a combination of KeyCell or X-Cycle tests until reaching either a contradiction or solution.
-* if a contradiction occurs, you will see one or more empty cells; i.e. where all candidates have 
-been eliminated. In this case use the e-key to restore the puzzle state prior to the assertion; then assert the other candidate.
+* choose a cell with a minimum number of candidates. One works, and the others will eventually fail.
+* assert one candidate; then use a combination of KeyCell or X-Cycle tests until reaching either 1) a solution, 2) a failed-puzzle-state, or 3) KeyCell fails to find another deletable digit.
+* if a failed puzzle state occurs, you will see one of two things:
+	* one or more empty cells; i.e. where all candidates have been eliminated.
+	* one or more houses are missing some digit.
+	* In either case, use the u-key to undo the assertion; then assert another candidate.
+* if KeyCell fails to find any more deletable digits, this represents an indeterminate state. The process described here can be recursively repeated by choosing another cell with minimal candidates...
 
-This approach is recursively repeatable, if necessary, but I have not yet found a sudoku puzzle where more than one assertion was necessary to reach either a contradiction or a solution.
+Other than "filmer", I have not yet found a sudoku puzzle where more than one assertion was necessary to reach either a failed puzzle state, or a solution.
+
+Note that this app allows the last 8 assertions to be undone.
+
+See ~/puzzles/impossible/ for a) filmer, b) escargot, c) inkala.
+
 
 -----------------------------------------------------------------------------------------------------
 
