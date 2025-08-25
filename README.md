@@ -39,6 +39,7 @@ https://github.com/fastrgv/Asud/releases/download/v1.2.3/sud1jun24.7z
 
 
 
+
 # ASUD: Ada Sudoku Assistant
 
 
@@ -46,36 +47,21 @@ https://github.com/fastrgv/Asud/releases/download/v1.2.3/sud1jun24.7z
 
 
 
+**ver 1.2.4 -- 25aug2025**
+
+* Added dynamically definable SET overlays to augment the 9 pre-defined ones.
+* Improved help screen.
+* Improved console hints.
+* Added a checker program to insure that puzzles have a unique solution (sol2.adb).
+
+
 **ver 1.2.3 -- 01jun2024**
 
 * Refined global KeyCell function to match strategy used for selected-cell version.
-* Added 9 distinct Set Equivalence Theory overlays.
+* Added 9 distinct Set Equivalence Theory [SET] overlays.
 * Corrected drawing so that any removable digits are now always seen in cyan color.
 * Now prohibit saving erroneous puzzle states.
 * Improved messaging in terminal window.
-
-
-**ver 1.2.2 -- 17may2024**
-
-* Significantly improved KeyCell function now finds the simplest removable-digit chains.
-
-
-**ver 1.2.1 -- 14may2024**
-
-* Improved terminal messages.
-* Improved transitions between auto-candidate and manual mode.
-* Reduced external file usage.
-* Improved the Kcell removable-digit search algorithm.
-* Minor change to key maps...
-	* (u)-key : Undo last assert.
-	* (.)-key : search for unique singles.
-
-
-**ver 1.2.0 -- 03may2024**
-
-* Enabled 8-level-undo for assertions.
-* Decluttered root directory by putting helper files elsewhere.
-* Save now preserves mode, too.
 
 
 More revision history is at end of this file.
@@ -136,9 +122,14 @@ All source code, build scripts & resources are included.
 
 * mouse-click 	=> select/Deselect one of 81 cells from among 9x9 array to edit
 
-* [1..9]-key	=> toggle candidate numeral n in selected cell (aka "pencil" mark)
+* [1..9]-key (for selected cell) => toggle candidate numeral n in cell (aka "pencil" mark)
 
-* [ctrl]+[1..9] => assert a single numeral n in selected cell (aka "Pen" mark)
+
+* [1..9]-keypad-key (with no cell selected) => toggle predefined SET overlay
+
+
+* [ctrl]+[1..9]-key (for selected cell) => assert a single numeral n in cell (aka "Pen" mark)
+
 
 * [u]-key		=> Undo most recent pen-mark (assertion); Limited to 8 most recent.
 					The number of remaining Undo's is written to the terminal window.
@@ -222,7 +213,10 @@ After the archive is unzipped...
 
 Users may then open a terminal window, cd to install-directory, then, at the command line, type the executable name to start the tool. (the command **must** be run from the install-directory) ...
 
-Let {fnam} indicate an optional input file-name. Then
+Let {fnam} indicate an optional input file-name. 
+If {fnam} is omitted, the previously saved puzzle is resumed.
+
+Then:
 
 ----------------------------------------------------------------------
 On OSX type "osud {fnam}"
@@ -245,10 +239,10 @@ Windows users type:  "wsud.bat {fnam}" or "binw64\sud.exe {fnam}"
 * If one commandline parameter is passed, it must be the relative path to a valid input file.
 
 In order to create a valid input file, copy the prototype file named "s0.txt" to a filename of your choosing. 
-Then edit it to match your puzzle, say sud1.txt. Zeros imply that the value is not known.
+Then edit it by replacing some zeros to match your puzzle, say sud1.txt. Zeros imply that the value is not known.
 So just insert the known puzzle values into their proper positions.
 
-(According to s0.txt, you may notice that the digit entries must be separated by spaces,
+(According to s0.txt, notice that the digit entries must be separated by spaces,
 and that textual comments after the end are tolerated.)
 
 Then simply type the command name followed by the input file name.
@@ -287,7 +281,7 @@ properly initialize the candidates that are displayed. Each flush might expose n
 that subsequently need flushing, again. The automation of flushes has recently been
 reduced to a bare minimum to avoid confusion.
 
-Similarly, the unique singles key (u-key) frequently exposes new (green) singles with each press,
+Similarly, the unique singles key (period-key) frequently exposes new (green) singles with each press,
 so that mutliple presses might be needed. 
 
 Use the following ASUD-methods to work towards a solution:
@@ -354,7 +348,7 @@ LinkedPairs box#9, dig= 9...multiple same-color-digits => removable (1st rule)
 The current chain of related digit pairs is printed to the terminal,
 along with a list of deletable candidates.
 
-Finally, chains that do not result in deletable digits are now skipped.
+Finally, chains that do not result in deletable digits are skipped.
 
 
 -----------------------------------------------------------------------------------------------------
@@ -425,7 +419,7 @@ deletable digits are hilighted in a Cyan color.
 
 ---------------------------------------------------------------------------------------------
 **Secondly,** the full-powered version is initiated by the same k-key, but without selecting a cell 
-first. It searches all cells in lexicographic order until it finds removable digits, or fails.
+first. It searches all cells in lexicographic order until it either finds removable digits, or it fails.
 
 #### Further details of Key-Cell
 
@@ -479,7 +473,9 @@ guessing technique. Same goes for my KeyCell method above.
 
 This is why guessing techniques may be acceptable to some.
 
-That said, I have collected 4 puzzles, so far, that reside in the directory ~/puzzles/impossible/ 
+Per convention, I call a puzzle "valid" if it has only one solution.
+
+That said, I have collected 3 [valid] puzzles, so far, that reside in the directory ~/puzzles/impossible/ 
 that refuse to be solved using KeyCell alone, without some sort of guessing. And here is a solution methodology for this type:
 
 * choose a cell with a small number of candidates. One works, and the others will eventually fail.
@@ -491,7 +487,7 @@ that refuse to be solved using KeyCell alone, without some sort of guessing. And
 	2) one or more houses are missing some digit.
 In either case, use the u-key to Undo the assertion; then assert a different candidate.
 
-* if KeyCell fails to find any more deletable digits, this represents an indeterminate state. The process described here can be recursively repeated by choosing another cell with minimal candidates...
+* if KeyCell fails to find any more contradictions with deletable digits, this represents an indeterminate state. The process described here can be recursively repeated by choosing another cell with minimal candidates...
 
 Note that this app allows the last 8 assertions [pen-marks] to be undone.
 
@@ -499,11 +495,30 @@ There are very few sudoku puzzle where more than one [pen-mark] assertion is nec
 
 -----------------------------------------------------------------------------------------------------
 
-## Set Equivalence Theory [SET] overlays
+## **Advanced Users:** Set Equivalence Theory [SET] overlays
 
-The key-pad numbers 1..9 on a typical keyboard now toggle 8 distinct geometric overlays, each with the property that the numeral-sets contained in each of the 2 colored regions are equal. This knowledge can occasionally [but rarely] help to solve a sudoku.
+Assuming no cell is selected, the **key-pad** numbers 1..9 on a typical keyboard now toggle 9 pre-defined geometric overlays, each with the property that the numeral-sets contained in each of the 2 colored regions are equal. This knowledge can occasionally [but rarely] help to solve a sudoku.
 
-EG: overlay #1 helps to solve ~/puzzles/extreme/wheel.txt without resorting to KeyCell or guessing.
+EG: overlay #1 helps to solve ~/puzzles/extreme/setWheel.txt without resorting to KeyCell or guessing.
+
+**New [somewhat awkward] trial method for defining custom overlays:**
+
+Newly added, custom-designed overlays are now possible using the O-key/o-key...
+Use the upper-case "O" key initiate definition of blue-rows in the set using digits 1..9.
+Type a zero to end defining rows and proceed to defining columns the same way, ending with a zero.
+Then, the lower-case "o" will toggle the display of the 2 colored sets MINUS their intersection.
+Note that if the number of rows and columns differ, then the 2 sets differ by some multiple
+of the set {1..9}.
+
+EG: in the above example, predefined overlay #1 could be approximated by the key sequence:
+O  14569023780
+
+where, in this case, the central blue box needs to be omitted before the pink and blue sets match,
+because there are 5 rows but only 4 columns.
+You can use the (equal)-key to "subtract" each of the 9 cells in the central box.
+(if you accidently delete the wrong cell, restore it with [plus]-key)
+At this point, the pink & blue sets contain the same digits.
+
 
 
 ## Build Requirements:
@@ -542,12 +557,21 @@ your actual installation directory for the 64bit GNU Ada compiler.
 are also included. In this type of puzzle, each cell can be in either 3 or 4 houses, 
 because the 2 diagonals are also houses.
 
-2) Brute-force solvers [susolve/susolvex] are also included under ./bruteForceSolver/. 
+2) Brute-force solvers [susolve/susolvex] are also included under ./utils/. 
 They display the first-found solution to the screen:
 
 * wsol.bat {filename} (on Windows)
 * lsol  {filename} (on Linux)
 * osol  {filename} (on osx)
+
+Just added: a new [sol2.adb] to detect if more than 1 solution exists.
+If so, the puzzle will be considered out-of-scope....
+
+* wsol2.bat {filename} (on Windows)
+* lsol2  {filename} (on Linux)
+* osol2  {filename} (on osx)
+
+
 
 For X-sudokus use wsolx.bat/lsolx/osolx.
 
@@ -559,7 +583,7 @@ For X-sudokus use wsolx.bat/lsolx/osolx.
 * ./puzzles/Xpuz/?.txt
 
 
-4) Note that this software knows when a bad assertion is made but it does not prevent it, but in the terminal window you will notice a "_?_" symbol.
+4) Note that this software knows when a bad assertion is made but it does not prevent it, but in the terminal window you will notice a "_?_" symbol. (using this feature to solve puzzles is cheating).
 
 
 -------------------------------------------------------------------------
@@ -569,9 +593,33 @@ For X-sudokus use wsolx.bat/lsolx/osolx.
 * Input puzzle handling is primitive.
 * Keyboard user interface is somewhat spartan.
 
+## Minimally Documented Features
+
+* predefined overlays:
+	keys kp_<1..9>:  display geometric overlays 
+	of red/green areas with equal number-sets
+	that are rarely helpful, but suggestive 
+	of many other geometric approaches. 
+	[kp_1-key helps with "~/extreme/setWheel"]
+
+* manual overlay definition/display:
+	O-key : define blue rows 1..9 + 0 +define red cols 1..9 + 0
+	o-key : toggle overlay display, minus intersection
+
+* highlight interesting or exceptional cells with pink border:
+	Pick a cell, then use [equal]-key;
+	Upper-case [equal]-key ([plus]-key) DEselects all pink cells.
+
+* string81 is an commandline utility that converts a string of 81 characters into a normally-formatted sudoku input file. Usage:
+	string81 < infile > outfile
+	The windows version (wstring81.exe) is untested.
+
 ## Summary:
-My original intent in writing this app was merely to avoid the optical drudgery of discovering unique singles or hidden triples/quads. But since then it has evolved to help me tackle ever more formidable puzzles,
-Lately I have tried to make the simpler puzzles more fun, too.
+My original intent in writing this app was merely to avoid the optical drudgery of discovering unique singles or hidden triples/quads. 
+
+My viewpoint differs from many real experts because, often, what they consider fun, I consider tedium, particularly in having to memorize an endless list of abstruse techniques and patterns.
+
+More recently however, Set Equivalence Theory techniques have reignited my excitement.
 
 
 ----------------------------------------------
@@ -598,7 +646,7 @@ In particular, I would greatly appreciate hearing about any repeatable problems.
 asud itself is covered by the GNU GPL v3 as indicated in the sources:
 
 
- Copyright (C) 2024  <fastrgv@gmail.com>
+ Copyright (C) 2025  <fastrgv@gmail.com>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -632,6 +680,22 @@ A standalone sokoban solver, and a morse code tool are only found at the SourceF
 
 ## Revision History:
 
+**ver 1.2.2 -- 17may2024**
+* Significantly improved KeyCell function now finds the simplest removable-digit chains.
+
+**ver 1.2.1 -- 14may2024**
+* Improved terminal messages.
+* Improved transitions between auto-candidate and manual mode.
+* Reduced external file usage.
+* Improved the Kcell removable-digit search algorithm.
+* Minor change to key maps...
+	* (u)-key : Undo last assert.
+	* (.)-key : search for unique singles.
+
+**ver 1.2.0 -- 03may2024**
+* Enabled 8-level-undo for assertions.
+* Decluttered root directory by putting helper files elsewhere.
+* Save now preserves mode, too.
 
 **ver 1.1.9 -- 30apr2024**
 * Fixed aborts when typing a number without selecting a cell first.
