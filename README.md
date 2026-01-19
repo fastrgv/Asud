@@ -25,7 +25,7 @@ Hidden Pairs
 
 Here is the link to the latest release, which includes all source:
 
-https://github.com/fastrgv/Asud/releases/download/v1.2.4/sud25aug25.7z
+https://github.com/fastrgv/Asud/releases/download/v1.2.5/sud20jan26.7z
 
 
 * On OSX, Keka works well for 7Z files. The command-line for Keka is:
@@ -50,7 +50,7 @@ https://github.com/fastrgv/Asud/releases/download/v1.2.4/sud25aug25.7z
 
 * Clarified documentation.
 * Eliminated need to install MSVC-redistributables on Windows 10, 11.
-* Now function keys f1..f9 OR (shft)+1..9 can trigger SET overlays too. This is for keyboards without a numeric-key-pad, eg Mac/OSX.
+* Now function keys f1..f9 OR (shft)+1..9 can toggle predefined SET overlays too. This is for keyboards without a numeric-key-pad, eg Mac/OSX.
 
 
 **ver 1.2.4 -- 25aug2025**
