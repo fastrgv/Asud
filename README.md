@@ -38,13 +38,19 @@ https://github.com/fastrgv/Asud/releases/download/v1.2.4/sud25aug25.7z
 
 
 
+# ASUD: 
+## Ada Sudoku Assistant...facilitating solutions
 
-
-# ASUD: Ada Sudoku Assistant
-
+-----------------------------------------------------------
 
 ## Most recent changes
 
+
+**ver 1.2.5 -- 20jan2026**
+
+* Clarified documentation.
+* Eliminated need to install MSVC-redistributables on Windows 10, 11.
+* Now function keys f1..f9 OR (shft)+1..9 can trigger SET overlays too. This is for keyboards without a numeric-key-pad, eg Mac/OSX.
 
 
 **ver 1.2.4 -- 25aug2025**
@@ -55,20 +61,11 @@ https://github.com/fastrgv/Asud/releases/download/v1.2.4/sud25aug25.7z
 * Added a checker program to insure that puzzles have a unique solution (sol2.adb).
 
 
-**ver 1.2.3 -- 01jun2024**
-
-* Refined global KeyCell function to match strategy used for selected-cell version.
-* Added 9 distinct Set Equivalence Theory [SET] overlays.
-* Corrected drawing so that any removable digits are now always seen in cyan color.
-* Now prohibit saving erroneous puzzle states.
-* Improved messaging in terminal window.
-
-
 More revision history is at end of this file.
 
 -----------------------------------------------------------------
 
-### Terminology
+### Terminology Prep:
 
 A given cell belongs to 3 "houses": its row, its column, its 3x3 box.
 In X-sudoku, a cell could also belong to a 4th house: the diagonal.
@@ -79,16 +76,18 @@ even if its cell has other candidates listed.
 
 
 
-## Introduction
+## Brief Description
 
 ASUD is a sudoku assistant tool designed to help with manually solving Sudoku puzzles.
-It handles routine tasks so you can focus on more advanced puzzle solving strategies.
+It handles the tedious tasks so you can focus on fun.
 
-For example, some routine, but tedious tasks are:
+For example, some routine but visually intensive bookeeping tasks are:
 
 * noticing single occurrences of a digit within a house
 * removing a singleton digit from all other cells in a house
 * finding hidden pairs, triples & quads, etc.
+
+### Details
 
 In each of the 81 cells, all candidate digits can be shown. The working goal is to
 facilitate the removal of as many candidate digits as possible.
@@ -114,75 +113,68 @@ All source code, build scripts & resources are included.
 * no installation;
 * no dependencies;
 * simply unzip in your Downloads directory, or to a flash drive, and run.
+* helps you learn standard sudoku solution techniques
 
 ------------------------------------------------
 
 
-## Control Keys:
-
-* mouse-click 	=> select/Deselect one of 81 cells from among 9x9 array to edit
-
-* [1..9]-key (for selected cell) => toggle candidate numeral n in cell (aka "pencil" mark)
+## Essential Control Keys:
 
 
-* [1..9]-keypad-key (with no cell selected) => toggle predefined SET overlay
+**mouse-click =>** select/Deselect one of 81 cells from among 9x9 array to edit
+
+**[1..9]-key (for selected cell) =>** toggle candidate numeral n in cell (aka "pencil" mark)
+
+**[ctrl]+[1..9]-key (for selected cell) =>** assert a single numeral n in cell (aka "Pen" mark)
+
+**[u]-key =>** Undo most recent pen-mark (assertion); Limited to 8 most recent. The number of remaining Undo's is written to the terminal window.
+
+**[esc]-key =>** Quit
+
+**[h]-key =>** toggle this key Help menu
+
+**[m]-key =>** toggles between Auto-candidate and Manual-candidate mode.
+		Manual mode shows only manually entered candidates (pencil-marks)
+		or manually asserted unique singles (pen-marks)
+		and disables advanced function keys: {a,n,u,p,t,q,x,y,c,k,l,d}
+
+**[s]-key =>** Save puzzle state for later restart
+
+**[r]-key =>** Restore (using data from previous save)
+
+**[f]-key =>** Flush: If no cell is selected, then for every cell with a unique single digit,
+		remove it from all other cells in its 3 houses.
+		If a cell with a single digit is selected, it flushes just that cell,
+
+### addditional functions available in auto-candidate-mode:
+
+**[.]-key =>** search for, assert, & flush: cells with a single candidate, and houses
+		with a single occurrence of a given digit.
+
+**[a]-key =>** toggle: hilight Aligned Box Digit Doubles (Red) with Cyan deletables.
+**[n]-key =>** toggle: hilight Nonaligned Box Digit Doubles (Purple)...utility doubtful.
 
 
-* [ctrl]+[1..9]-key (for selected cell) => assert a single numeral n in cell (aka "Pen" mark)
+**[b]-key =>** toggle a Brute-Force solver to find & show [first] solution
 
+**[p]-key =>** view toggle: Pairs: 1) hidden-box, 2) hidden-row, 3) hidden-col, 4) naked-R/C/B, 5) Off
 
-* [u]-key		=> Undo most recent pen-mark (assertion); Limited to 8 most recent.
-					The number of remaining Undo's is written to the terminal window.
+**[t]-key =>** view toggle: Triples: 1) hidden-box, 2) hidden-row, 3) hidden-col, 4) naked-R/C/B, 5) Off
 
-* [esc]-key		=> Quit
+**[q]-key =>** view toggle: Quads: 1) hidden-box, 2) hidden-row, 3) hidden-col, 4) naked-R/C/B, 5) Off
 
-* [h]-key		=> toggle this key Help menu
+**[x]-key =>** toggle: Xwing (shows only 1st-found; cyan implies removable)
 
-* [m]-key		=> toggles between Auto-candidate and Manual-candidate mode.
-						Manual mode shows only manually entered candidates (pencil-marks)
-						or manually asserted unique singles (pen-marks)
-						and disables advanced function keys: {a,n,u,p,t,q,x,y,c,k,l,d}
+**[y]-key =>** toggle: Ywing (shows only 1st-found)
 
-* [s]-key		=> Save puzzle state for later restart
+**[c]-key =>** toggle: xCycle (shows only 1st-found, searches bad, then good)
 
-* [r]-key		=> Restore (using data from previous save)
+**[l]-key =>** toggle: multiple Linked-pairs-chains hilighted with alternating Red/Blue colors
 
-* [f]-key		=> Flush: If no cell is selected, then for every cell with a unique single digit,
-						remove it from all other cells in its 3 houses.
-						If a cell with a single digit is selected, it flushes just that cell,
+**[d]-key =>** toggle: hilight Digit-Doubles: 1) box, 2) row, 3) col, 4) Off
 
-------------------------- auto-candidate-mode ftns below ---------------------------------------
-
-* [.]-key		=> search for, assert, & flush: cells with a single candidate, and houses
-						with a single occurrence of a given digit.
-
-* [a]-key		=> toggle: hilight Aligned Box Digit Doubles (Red) with Cyan deletables.
-* [n]-key		=> toggle: hilight Nonaligned Box Digit Doubles (Purple)...utility doubtful.
-
-
-* [b]-key		=> toggle a Brute-Force solver to find & show [first] solution
-
-* [p]-key=> view toggle: Pairs: 1) hidden-box, 2) hidden-row, 3) hidden-col, 4) naked-R/C/B, 5) Off
-
-* [t]-key=> view toggle: Triples: 1) hidden-box, 2) hidden-row, 3) hidden-col, 4) naked-R/C/B, 5) Off
-
-* [q]-key=> view toggle: Quads: 1) hidden-box, 2) hidden-row, 3) hidden-col, 4) naked-R/C/B, 5) Off
-
-* [x]-key		=> toggle: Xwing (shows only 1st-found; cyan implies removable)
-
-* [y]-key		=> toggle: Ywing (shows only 1st-found)
-
-* [c]-key		=> toggle: xCycle (shows only 1st-found, searches bad, then good)
-
-* [l]-key		=> toggle: multiple Linked-pairs-chains hilighted with alternating Red/Blue colors
-
-* [d]-key		=> toggle: hilight Digit-Doubles: 1) box, 2) row, 3) col, 4) Off
-
-* [k]-key		=> toggle: Key-Cell test: If no cell selected, tests all cells until contradiction is found.
-					**You may select a cell first, to limit Key-Cell test to selected cell.**
-
---------------------------------------------------------------------------
-
+**[k]-key =>** toggle: Key-Cell test: If no cell selected, tests all cells until contradiction is found.
+					You may select a cell first, to limit Key-Cell test to selected cell.
 
 Notes:
 
@@ -293,8 +285,8 @@ Use the following ASUD-methods to work towards a solution:
 	* Xwing-view
 	* Linked-Pairs-view
 	* xCycle-view.
-* f-key: Flush all dups
-* .-key: process all singles: remove other candidates in same cell, then flush.
+* (f)-key: Flush all dups
+* (.)-key: process all singles: remove other candidates in same cell, then flush.
 
 -----------------------------------------------------------------------------------------------------
 The hidden pairs/triples/quads tool allows particularly easy removal of excess candidates.
@@ -304,7 +296,8 @@ If new digit pairs or singles appear, you might be able to eliminate even more c
 
 **Note that known removable digits are generally displayed using a cyan color**
 
------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+## Solution Techniques
 
 ### Digit-Doubles/Triples Box View [d-key]
 
@@ -411,14 +404,14 @@ There exists extreme puzzles that require advanced methods and insights...
 This powerful tool can be used in 2 ways.
 
 ---------------------------------------------------------------------------------------------
-**Firstly,** if you select a cell before hitting the k-key, then it operates **only** on the selected cell.
+**First,** if you select a cell before hitting the k-key, then it operates **only** on the selected cell.
 It tries asserting each candidate in the cell to find whether it leads to a contradiction
 that identifies some deletable digit. Look for a shortest chain of logic by selecting various different 
 cells. Short logic chains are much easier to follow and appreciate. If contradictions are found, 
 deletable digits are hilighted in a Cyan color. 
 
 ---------------------------------------------------------------------------------------------
-**Secondly,** the full-powered version is initiated by the same k-key, but without selecting a cell 
+**Second,** the full-powered version is initiated by the same k-key, but without selecting a cell 
 first. It searches all cells in lexicographic order until it either finds removable digits, or it fails.
 
 #### Further details of Key-Cell
@@ -495,13 +488,26 @@ There are very few sudoku puzzle where more than one [pen-mark] assertion is nec
 
 -----------------------------------------------------------------------------------------------------
 
-## **Advanced Users:** Set Equivalence Theory [SET] overlays
+## Advanced Users:  Set Equivalence Theory [SET] overlays
 
-Assuming no cell is selected, the **key-pad** numbers 1..9 on a typical keyboard now toggle 9 pre-defined geometric overlays, each with the property that the numeral-sets contained in each of the 2 colored regions are equal. This knowledge can occasionally [but rarely] help to solve a sudoku.
+Assuming no cell is selected, there are keyboard keys that toggle 9 pre-defined geometric overlays, each with the property that the numeral-sets contained in each of the 2 colored regions are equal. This knowledge can occasionally help to solve a sudoku.
+
+---------------------------- predefined SET overlays: --------------------------
+
+**[1..9]-numeric-key-pad (with no cell selected) =>** toggle predefined SET overlay
+
+**[f1..f9]-ftn-keys (with no cell selected)      =>** toggle predefined SET overlay
+
+**[shft]+[1..9]-keys (with no cell selected)     =>** toggle predefined SET overlay
+
+--------------------------------------------------------------------------
+
 
 EG: overlay #1 helps to solve ~/puzzles/extreme/setWheel.txt without resorting to KeyCell or guessing.
 
-**New [somewhat awkward] trial method for defining custom overlays:**
+
+
+### Method for defining custom overlays:
 
 Newly added, custom-designed overlays are now possible using the O-key/o-key...
 Use the upper-case "O" key initiate definition of blue-rows in the set using digits 1..9.
@@ -510,16 +516,28 @@ Then, the lower-case "o" will toggle the display of the 2 colored sets MINUS the
 Note that if the number of rows and columns differ, then the 2 sets differ by some multiple
 of the set {1..9}.
 
-EG: in the above example, predefined overlay #1 could be approximated by the key sequence:
+EG: predefined overlay #1 could be approximated by the key sequence:
 O  14569023780
 
 where, in this case, the central blue box needs to be omitted before the pink and blue sets match,
 because there are 5 rows but only 4 columns.
 You can use the (equal)-key to "subtract" each of the 9 cells in the central box.
-(if you accidently delete the wrong cell, restore it with [plus]-key)
+(if you accidently delete the wrong cell, restore it with [plus]=UpperCaseEqual key)
 At this point, the pink & blue sets contain the same digits.
 
+Summary:
 
+**O-key =>** (cap Oh) begin defining blue-rows in the row-set
+
+**0-key =>** (zero) end defining blue-rows; begin defining red-cols in the col-set
+
+**0-key =>** (zero) end defining col-set
+
+**o-key =>** (small Oh) toggle display of union minus intersection [minus subtracted cells]
+
+**=-key =>** to subtract a selected-cell from either set, as needed
+
+---------------------------------------------------------------------------------
 
 ## Build Requirements:
 * systems:  Windows, OSX, or GNU/Linux
@@ -595,20 +613,9 @@ For X-sudokus use wsolx.bat/lsolx/osolx.
 
 ## Minimally Documented Features
 
-* predefined overlays:
-	keys kp_<1..9>:  display geometric overlays 
-	of red/green areas with equal number-sets
-	that are rarely helpful, but suggestive 
-	of many other geometric approaches. 
-	[kp_1-key helps with "~/extreme/setWheel"]
-
-* manual overlay definition/display:
-	O-key : define blue rows 1..9 + 0 +define red cols 1..9 + 0
-	o-key : toggle overlay display, minus intersection
-
 * highlight interesting or exceptional cells with pink border:
 	Pick a cell, then use [equal]-key;
-	Upper-case [equal]-key ([plus]-key) DEselects all pink cells.
+	Upper-case-[equal]-key, i.e. [plus]-key, DEselects all pink cells.
 
 * string81 is an commandline utility that converts a string of 81 characters into a normally-formatted sudoku input file. Usage:
 	string81 < infile > outfile
@@ -619,7 +626,7 @@ My original intent in writing this app was merely to avoid the optical drudgery 
 
 My viewpoint differs from many real experts because, often, what they consider fun, I consider tedium, particularly in having to memorize an endless list of abstruse techniques and patterns.
 
-More recently however, Set Equivalence Theory techniques have reignited my excitement.
+More recently however, learning some Set Equivalence Theory techniques has rekindled my excitement and fascination.
 
 
 ----------------------------------------------
@@ -646,7 +653,7 @@ In particular, I would greatly appreciate hearing about any repeatable problems.
 asud itself is covered by the GNU GPL v3 as indicated in the sources:
 
 
- Copyright (C) 2025  <fastrgv@gmail.com>
+ Copyright (C) 2026  <fastrgv@gmail.com>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -679,6 +686,13 @@ A standalone sokoban solver, and a morse code tool are only found at the SourceF
 
 
 ## Revision History:
+
+**ver 1.2.3 -- 01jun2024**
+* Refined global KeyCell function to match strategy used for selected-cell version.
+* Added 9 distinct Set Equivalence Theory [SET] overlays.
+* Corrected drawing so that any removable digits are now always seen in cyan color.
+* Now prohibit saving erroneous puzzle states.
+* Improved messaging in terminal window.
 
 **ver 1.2.2 -- 17may2024**
 * Significantly improved KeyCell function now finds the simplest removable-digit chains.
