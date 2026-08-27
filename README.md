@@ -25,7 +25,7 @@ Hidden Pairs
 
 Here is the link to the latest release, which includes all source:
 
-https://github.com/fastrgv/Asud/releases/download/v1.2.5/sud20jan26.7z
+https://github.com/fastrgv/Asud/releases/download/v1.2.6/sud28aug26.7z
 
 
 * On OSX, Keka works well for 7Z files. The command-line for Keka is:
