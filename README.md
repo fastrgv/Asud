@@ -37,6 +37,9 @@ https://github.com/fastrgv/Asud/releases/download/v1.2.5/sud20jan26.7z
 
 
 
+Permalink: 
+https://sourceforge.net/projects/asud/files/latest/download
+
 
 # ASUD: 
 ## Ada Sudoku Assistant...facilitating solutions
@@ -44,6 +47,16 @@ https://github.com/fastrgv/Asud/releases/download/v1.2.5/sud20jan26.7z
 -----------------------------------------------------------
 
 ## Most recent changes
+
+
+**ver 1.2.6 -- 28aug2026**
+
+* Any assert [of a pen-value] now initiates an automatic flush.
+* Doubles, Pairs, Triples, & Quads now announce deletables in console.
+* A mouse-click on any single now highlights all like singles.
+* Improved behavior by NOT automatically flushing/asserting after merely removing a pencil-digit.
+* The green hilighting of singles is now OFF by default; use the comma key to toggle it.
+* Lone digit keys now force assertions (pen values), while ctrl-d indicates toggling candidate d.
 
 
 **ver 1.2.5 -- 20jan2026**
@@ -123,9 +136,9 @@ All source code, build scripts & resources are included.
 
 **mouse-click =>** select/Deselect one of 81 cells from among 9x9 array to edit
 
-**[1..9]-key (for selected cell) =>** toggle candidate numeral n in cell (aka "pencil" mark)
+**[ctrl]+[1..9]-key  =>** toggle candidate in selected cell (aka "pencil" mark)
 
-**[ctrl]+[1..9]-key (for selected cell) =>** assert a single numeral n in cell (aka "Pen" mark)
+**[1..9]-key  =>** assert a value in selected cell (aka "Pen" mark)
 
 **[u]-key =>** Undo most recent pen-mark (assertion); Limited to 8 most recent. The number of remaining Undo's is written to the terminal window.
 
@@ -148,6 +161,7 @@ All source code, build scripts & resources are included.
 
 ### addditional functions available in auto-candidate-mode:
 
+**[,]-key =>** toggle: green hilights for singles. Now OFF by default.
 **[.]-key =>** search for, assert, & flush: cells with a single candidate, and houses
 		with a single occurrence of a given digit.
 
@@ -230,7 +244,7 @@ Windows users type:  "wsud.bat {fnam}" or "binw64\sud.exe {fnam}"
 
 * If one commandline parameter is passed, it must be the relative path to a valid input file.
 
-In order to create a valid input file, copy the prototype file named "s0.txt" to a filename of your choosing. 
+In order to manually create a valid input file, copy the prototype file named "s0.txt" to a filename of your choosing. 
 Then edit it by replacing some zeros to match your puzzle, say sud1.txt. Zeros imply that the value is not known.
 So just insert the known puzzle values into their proper positions.
 
@@ -256,29 +270,34 @@ To restart, type the executable name with no parameter.
 ## How to best use this tool:
 
 The 2 primary viewing modes are toggled with the m-key: 
-1) auto-candidate (default), and 2) manual-mode (beta-test). 
+1) auto-candidate (default),
+2) manual-mode (beta-test). 
 
-The manual mode makes easy puzzles more fun by disabling most of the advanced functions. 
+The manual mode makes easy puzzles more fun by disabling most of the advanced helper functions. 
 Manual mode is very intuitive and similar to typical online sudoku-solving tools,
-except it has auto-flush when a single numeral is asserted. Testing for this mode is still ongoing,
+except it has auto-flush when a single numeral is asserted. Testing for this mode is ongoing,
 so I'm not yet sure that all error conditions are handled well. (In auto-candidate mode, 
-simpler puzzles are too easily solved, and much of the fun is lost.)
+simple puzzles are too easily solved, and much of the fun is lost.)
 
+---------------------------------------------------------------------
 
 The remaining descriptions refer to the default auto-candidate mode, for difficult puzzles.
 
 The general strategy for solving any sudoku puzzle is to minimize the candidates within each cell.
 After loading a puzzle, you will need to FlushAll, perhaps more than once, in order to
 properly initialize the candidates that are displayed. Each flush might expose new singles
-that subsequently need flushing, again. The automation of flushes has recently been
-reduced to a bare minimum to avoid confusion.
+that subsequently need flushing, again. 
 
-Similarly, the unique singles key (period-key) frequently exposes new (green) singles with each press,
-so that mutliple presses might be needed. 
+Similarly, the unique singles key (period-key) frequently exposes new singles with each press,
+so that mutliple presses might be needed. I recommend that for harder puzzles you toggle ON the 
+green highlighting of singles using the comma-key, but for more moderate puzzles leaving it 
+OFF will make solving a bit more challenging & enjoyable. Most online sudoku games do NOT
+highlight singles.
 
-Use the following ASUD-methods to work towards a solution:
+Use the following methods to work towards a solution:
 
-* remove candidates using 
+* find removable candidates using 
+	* Aligned doubles (&triples) view
 	* Digit-Doubles-view
 	* Hidden Pairs/Triples/Quad-view
 	* Ywing-view
@@ -294,7 +313,8 @@ Simply remove the Cyan digits in each involved cell.
 
 If new digit pairs or singles appear, you might be able to eliminate even more candidates.
 
-**Note that known removable digits are generally displayed using a cyan color**
+**Note that known removable digits are generally displayed using a CYAN color**
+Remember to use (ctrl)-d to toggle candidate digit d.
 
 ---------------------------------------------------------------------------------
 ## Solution Techniques
@@ -562,7 +582,6 @@ Use the following commands:
 * sudo apt-get install libx11-dev
 ------------------------------------------------------
 
-
 Three [pre-compiled] binary executables are delivered. All are fairly portable. 
 Also remember that the Windows binary will run under WINE on Linux.
 
@@ -591,7 +610,7 @@ your actual installation directory for the 64bit GNU Ada compiler.
 are also included. In this type of puzzle, each cell can be in either 3 or 4 houses, 
 because the 2 diagonals are also houses.
 
-2) Brute-force solvers [susolve/susolvex] are also included under ./utils/. 
+2) Brute-force solvers [sol/solx] are also included under ./utils/. 
 They display the first-found solution to the screen:
 
 * wsol.bat {filename} (on Windows)
@@ -606,18 +625,19 @@ If so, the puzzle will be considered out-of-scope....
 * osol2  {filename} (on osx)
 
 
-
 For X-sudokus use wsolx.bat/lsolx/osolx.
+
+All these utilities are found in the ~/sudoku/utils/ directory.
 
 3) A fair variety of puzzles can be found in the directories:
 
-* ./puzzles/?.txt (see descriptions @ bottom for difficulty level)
-* ./puzzles/extreme/?.txt
-* ./puzzles/impossible/?.txt
-* ./puzzles/Xpuz/?.txt
+* ~/sudoku/puzzles/?.txt (see descriptions @ bottom for difficulty level)
+* ~/sudoku/puzzles/extreme/?.txt
+* ~/sudoku/puzzles/impossible/?.txt
+* ~/sudoku/puzzles/Xpuz/?.txt
 
 
-4) Note that this software knows when a bad assertion is made but it does not prevent it, but in the terminal window you will notice a "_?_" symbol. (using this feature to solve puzzles is cheating).
+4) Note that this sudoku platform knows when a bad assertion is made but it does not prevent it, but in the terminal window you will notice a "_?_" symbol. (using this feature to solve puzzles is cheating).
 
 
 -------------------------------------------------------------------------
@@ -819,6 +839,11 @@ that makes easy puzzles much more fun.
 * Enhancements to displays, keymap.
 * Replace "="-key with 3-way d-key for house digit-doubles.
 * Improved k-key console-terminal explanations.
+
+**ver 1.0.0 -- 25may2023**
+* Initial release.
+
+
 
 **ver 1.0.0 -- 25may2023**
 * Initial release.
