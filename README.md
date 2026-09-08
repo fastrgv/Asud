@@ -37,6 +37,7 @@ https://github.com/fastrgv/Asud/releases/download/v1.2.6/sud28aug26.7z
 
 
 
+
 Permalink: 
 https://sourceforge.net/projects/asud/files/latest/download
 
@@ -49,6 +50,13 @@ https://sourceforge.net/projects/asud/files/latest/download
 ## Most recent changes
 
 
+**ver 1.2.7 -- 9sep2026**
+
+* User interface enhancements:
+	* Right mouse button click now selects a yellow-bordered cell for toggling pencil marks
+	* Left mouse button still selects a red-bordered cell for asserting a pen-value
+
+
 **ver 1.2.6 -- 28aug2026**
 
 * Any assert [of a pen-value] now initiates an automatic flush.
@@ -56,7 +64,7 @@ https://sourceforge.net/projects/asud/files/latest/download
 * A mouse-click on any single now highlights all like singles.
 * Improved behavior by NOT automatically flushing/asserting after merely removing a pencil-digit.
 * The green hilighting of singles is now OFF by default; use the comma key to toggle it.
-* Lone digit keys now force assertions (pen values), while ctrl-d indicates toggling candidate d.
+* After cell selection, lone digit keys now force assertions (pen values), while ctrl-d indicates toggling candidate d.
 
 
 **ver 1.2.5 -- 20jan2026**
@@ -85,7 +93,7 @@ In X-sudoku, a cell could also belong to a 4th house: the diagonal.
 Saying cells can "see" each other means they share a house.
 Singles are cells with all digits but one eliminated. A single also
 refers to a candidate digit that is unique in one of its houses,
-even if its cell has other candidates listed.
+even if its cell has other candidates.
 
 
 
@@ -97,7 +105,7 @@ It handles the tedious tasks so you can focus on fun.
 For example, some routine but visually intensive bookeeping tasks are:
 
 * noticing single occurrences of a digit within a house
-* removing a singleton digit from all other cells in a house
+* removing a single digit from all other cells in a house
 * finding hidden pairs, triples & quads, etc.
 
 ### Details
@@ -111,10 +119,10 @@ whose display can be toggled.
 The default display shows automatically calculated candidate digits in the center of each cell. 
 For simple puzzles, one can toggle a Manual mode that just shows manually-inserted pen or pencil mark numerals.
 
-Sudoku fans that get stuck will find that this app can help 
-them to get a new perspective, using any PC or laptop.
-This package includes executables that run on Windows, OSX, and Linux.
-All source code, build scripts & resources are included.
+Sudoku fans that get stuck will find that this app can help them to get 
+a new perspective, using any PC or laptop. This package includes 
+executables that run on Windows, OSX, and Linux. All source code, 
+build scripts & resources are included.
 
 
 ## Features
@@ -134,11 +142,12 @@ All source code, build scripts & resources are included.
 ## Essential Control Keys:
 
 
-**mouse-click =>** select/Deselect one of 81 cells from among 9x9 array to edit
+**left-mouse-btn =>** select/Deselect one of 81 cells from among 9x9 array to assert a pen-mark-value (red outline)
 
-**[ctrl]+[1..9]-key  =>** toggle candidate in selected cell (aka "pencil" mark)
+**right-mouse-btn =>** select/Deselect one of 81 cells from among 9x9 array to toggle pencil marks (yellow outline)
 
-**[1..9]-key  =>** assert a value in selected cell (aka "Pen" mark)
+**[1..9]-key  =>** assert a pen-mark **or** toggle a pencil mark for a selected cell
+
 
 **[u]-key =>** Undo most recent pen-mark (assertion); Limited to 8 most recent. The number of remaining Undo's is written to the terminal window.
 
@@ -244,12 +253,9 @@ Windows users type:  "wsud.bat {fnam}" or "binw64\sud.exe {fnam}"
 
 * If one commandline parameter is passed, it must be the relative path to a valid input file.
 
-In order to manually create a valid input file, copy the prototype file named "s0.txt" to a filename of your choosing. 
-Then edit it by replacing some zeros to match your puzzle, say sud1.txt. Zeros imply that the value is not known.
-So just insert the known puzzle values into their proper positions.
+In order to manually create a valid input file, copy the prototype file named "s0.txt" to a filename of your choosing. Then edit it by replacing some zeros to match your puzzle, say sud1.txt. Zeros imply that the value is not known. So just insert the known puzzle values into their proper positions.
 
-(According to s0.txt, notice that the digit entries must be separated by spaces,
-and that textual comments after the end are tolerated.)
+(According to s0.txt, notice that the digit entries must be separated by spaces, and that textual comments after the end are tolerated.)
 
 Then simply type the command name followed by the input file name.
 
@@ -258,8 +264,7 @@ Then simply type the command name followed by the input file name.
 
 ...
 
-After working with the tool and eliminating as many candidate digits as possible,
-one can save the state using the "s" key. This creates the file: frestoreB.txt
+After working with the tool and eliminating as many candidate digits as possible, one can save the state using the "s" key. This creates the file: frestoreB.txt
 
 To restart, type the executable name with no parameter.
 
@@ -273,26 +278,15 @@ The 2 primary viewing modes are toggled with the m-key:
 1) auto-candidate (default),
 2) manual-mode (beta-test). 
 
-The manual mode makes easy puzzles more fun by disabling most of the advanced helper functions. 
-Manual mode is very intuitive and similar to typical online sudoku-solving tools,
-except it has auto-flush when a single numeral is asserted. Testing for this mode is ongoing,
-so I'm not yet sure that all error conditions are handled well. (In auto-candidate mode, 
-simple puzzles are too easily solved, and much of the fun is lost.)
+The manual mode makes easy puzzles more fun by disabling most of the advanced helper functions. Manual mode is very intuitive and similar to typical online sudoku-solving tools, except it has auto-flush when a single numeral is asserted. Testing for this mode is ongoing, so I'm not yet sure that all error conditions are handled well. (In auto-candidate mode, simple puzzles are too easily solved, and much of the fun is lost.)
 
 ---------------------------------------------------------------------
 
 The remaining descriptions refer to the default auto-candidate mode, for difficult puzzles.
 
-The general strategy for solving any sudoku puzzle is to minimize the candidates within each cell.
-After loading a puzzle, you will need to FlushAll, perhaps more than once, in order to
-properly initialize the candidates that are displayed. Each flush might expose new singles
-that subsequently need flushing, again. 
+The general strategy for solving any sudoku puzzle is to minimize the candidates within each cell. After loading a puzzle, you will need to FlushAll, perhaps more than once, in order to properly initialize the candidates that are displayed. Each flush might expose new singles that subsequently need flushing, again. 
 
-Similarly, the unique singles key (period-key) frequently exposes new singles with each press,
-so that mutliple presses might be needed. I recommend that for harder puzzles you toggle ON the 
-green highlighting of singles using the comma-key, but for more moderate puzzles leaving it 
-OFF will make solving a bit more challenging & enjoyable. Most online sudoku games do NOT
-highlight singles.
+Similarly, the unique singles key (period-key) frequently exposes new singles with each press, so that mutliple presses might be needed. I recommend that for harder puzzles you toggle ON the green highlighting of singles using the comma-key, but for more moderate puzzles leaving it OFF will make solving a bit more challenging & enjoyable. Most online sudoku games do NOT highlight singles.
 
 Use the following methods to work towards a solution:
 
@@ -335,13 +329,10 @@ Remember to use (ctrl)-d to toggle candidate digit d.
 -----------------------------------------------------------------------------------------------------
 
 ### Linked-Pairs-View [l-key]
-A digit-pair refers to a single house with exactly 2 occurrences of a
-particular digit. That means they are strongly connected in the sense that
-if one of them is OFF then the other must be ON.
-This view shows a chain of digit pairs with alternating colors 
-(nominally Red/Blue), where one color represents ON and the other OFF, 
-but we don't know which is which. **Note that a chain of digit-pairs may form
-a tree structure of related digit-pairs, rather than a linear sequence.**
+A digit-pair refers to a single house with exactly 2 occurrences of a particular digit. That means they are strongly connected in the sense that
+if one of them is OFF then the other must be ON. This view shows a chain of digit pairs with alternating colors (nominally Red/Blue), where one color represents ON and the other OFF, but we don't know which is which. 
+
+**Note that a chain of digit-pairs may form a tree structure of related digit-pairs, rather than a linear sequence.**
 
 The Linked-Pairs view allows manual application of the following rules for elimination:
 
@@ -367,34 +358,17 @@ Finally, chains that do not result in deletable digits are skipped.
 -----------------------------------------------------------------------------------------------------
 
 ### xCycle-View [ c-key ]
-This view first looks for contradictory xCycles, which are somewhat similar to linked-pairs.
-This inconsistent-xCycle view shows a chain of digits with alternating 
-colors, where Blue represents ON and Red is OFF [in the forward direction]. If anything is 
-displayed, then the first digit, originally Blue because it was assumed ON, 
-shares a house with another Blue, which is contradictory.
-Thusly, the first digit in the chain should be removed, indicated by its [new] color Cyan.
-The on-screen label shows the cell-coordinates of the first & last cells in the chain;
-EG: "xCycle-19-99" indicates the first cell in the chain is at row=1, col=9.
-The console terminal lists the logical sequences of digit states.
+This view first looks for contradictory xCycles, which are somewhat similar to linked-pairs. This inconsistent-xCycle view shows a chain of digits with alternating colors, where Blue represents ON and Red is OFF [in the forward direction]. If anything is displayed, then the first digit, originally Blue because it was assumed ON, shares a house with another Blue, which is contradictory. Thusly, the first digit in the chain should be removed, indicated by its [new] color Cyan. The on-screen label shows the cell-coordinates of the first & last cells in the chain; EG: "xCycle-19-99" indicates the first cell in the chain is at row=1, col=9. The console terminal lists the logical sequences of digit states.
 
-If that first search fails, it then searches for a consistent x-cycle chain that generates
-any [Cyan-colored] deletable cells that can see both Blue & Red colored chain links.
-Again, the console terminal lists the logical sequences of digit states.
-Note that a consistent sequence can be read backwards if one reverses the color 
-interpretations, i.e. Red=On, Blue=Off.
+If that first search fails, it then searches for a consistent x-cycle chain that generates any [Cyan-colored] deletable cells that can see both Blue & Red colored chain links. Again, the console terminal lists the logical sequences of digit states. Note that a consistent sequence can be read backwards if one reverses the color interpretations, i.e. Red=On, Blue=Off.
 
-The C-key [cap-C] searches only for consistent X-Cycles. This is mainly for algorithmic testing
-because the contradictory X-Cycle search often finds the same deletables, first.
+The C-key [cap-C] searches only for consistent X-Cycles. This is mainly for algorithmic testing because the contradictory X-Cycle search often finds the same deletables, first.
 
 
 -----------------------------------------------------------------------------------------------------
 
 ### Ywing-View [y-key]
-Here, the first Ywing found is displayed. A Ywing is a triple of related cells, 
-only one of which, the pivot, can see the other two, called the "pincers". 
-The 2 pincers intersect at a "target" cell. The pivot has only 2 candidates, 
-where either one forces the elimination of a common digit in the target cell.
-If no target exists, or it has been removed, then nothing will be displayed.
+Here, the first Ywing found is displayed. A Ywing is a triple of related cells, only one of which, the pivot, can see the other two, called the "pincers". The 2 pincers intersect at a "target" cell. The pivot has only 2 candidates, where either one forces the elimination of a common digit in the target cell. If no target exists, or it has been removed, then nothing will be displayed.
 
 -----------------------------------------------------------------------------------------------------
 
@@ -425,29 +399,16 @@ This powerful tool can be used in 2 ways.
 
 ---------------------------------------------------------------------------------------------
 **First,** if you select a cell before hitting the k-key, then it operates **only** on the selected cell.
-It tries asserting each candidate in the cell to find whether it leads to a contradiction
-that identifies some deletable digit. Look for a shortest chain of logic by selecting various different 
-cells. Short logic chains are much easier to follow and appreciate. If contradictions are found, 
-deletable digits are hilighted in a Cyan color. 
+It tries asserting each candidate in the cell to find whether it leads to a contradiction that identifies some deletable digit. Look for a shortest chain of logic by selecting various different cells. Short logic chains are much easier to follow and appreciate. If contradictions are found, deletable digits are hilighted in a Cyan color. 
 
 ---------------------------------------------------------------------------------------------
-**Second,** the full-powered version is initiated by the same k-key, but without selecting a cell 
-first. It searches all cells in lexicographic order until it either finds removable digits, or it fails.
+**Second,** the full-powered version is initiated by the same k-key, but without selecting a cell first. It searches all cells in lexicographic order until it either finds removable digits, or it fails.
 
 #### Further details of Key-Cell
 
-If you have reduced the candidates as much as possible with other methods, but still
-need help, then use the k-key. This **Key-Cell** test searches the ramifications 
-of selecting each digit in each cell, which might lead to a logical contradiction. 
-If so, the causal digit is shown in Cyan, indicating it should be removed.
-A contradiction eventually appears in the form of a cell that would become empty, outlined in blue,
-OR a house that is missing a [orange] digit. The logic sequence for that contradiction appears in the terminal window.
+If you have reduced the candidates as much as possible with other methods, but still need help, then use the k-key. This **Key-Cell** test searches the ramifications of selecting each digit in each cell, which might lead to a logical contradiction. If so, the causal digit is shown in Cyan, indicating it should be removed. A contradiction eventually appears in the form of a cell that would become empty, outlined in blue, OR a house that is missing a [orange] digit. The logic sequence for that contradiction appears in the terminal window.
 
-During this test, any values shown in blue (singles) are definitely ON, while values shown in orange
-are definitely OFF. The blue & orange values are the result of the hypothesized initial digit.
-If a cell contains only orange digits, then it is colored with a blue outline because all
-of its digits have been ruled out; AND since an empty cell is a contradiction, the original 
-hypothesized digit is shown in a CYAN color.
+During this test, any values shown in blue (singles) are definitely ON, while values shown in orange are definitely OFF. The blue & orange values are the result of the hypothesized initial digit. If a cell contains only orange digits, then it is colored with a blue outline because all of its digits have been ruled out; AND since an empty cell is a contradiction, the original hypothesized digit is shown in a CYAN color.
 
 If no blue cells appear, but some house has a missing digit, that is also a contradiction, which is so indicated in the terminal window, along with the removable cyan digit that caused it.
 
@@ -458,8 +419,7 @@ then no contradictions were found and you will have to try something else.
 Alternate-Inference-Chain, Hidden-Unique-Rectangle, etc.), all of which assume a single digit in a 
 particular cell, followed by a chain of inferences leading to a contradiction.
 
-The logical sequence of hypothetical new (BLUE) singles followed by the resulting deletions (Orange) is
-written to the console window to explain why the blue cells are empty.
+The logical sequence of hypothetical new (BLUE) singles followed by the resulting deletions (Orange) is written to the console window to explain why the blue cells are empty.
 
 EG:
 
@@ -469,27 +429,20 @@ EG:
 
 etc.
 
-...meaning: if we assume digit 3 in cell @ row=1, col=4 then the consequences are to
-remove digit 3 at cells (3,5), (1,7), (1,8), (1,9) & (7,4), each of which are in the same house.
-Repeating this process should eventually solve the puzzle, in most cases.
-This new Key-Cell test can solve some [but not all] terribly hard puzzles.
+...meaning: if we assume digit 3 in cell @ row=1, col=4 then the consequences are to remove digit 3 at cells (3,5), (1,7), (1,8), (1,9) & (7,4), each of which are in the same house. Repeating this process should eventually solve the puzzle, in most cases. This new Key-Cell test can solve some [but not all] terribly hard puzzles.
 
 All cells are searched in lexicographic order and the first contradiction found is displayed. Typically, each application will expose new contradictions, until solved.
 
 -----------------------------------------------------------------------------------------------------
 
 ### Guessing
-Most experts consider X-Cycles a valid solution technique. But the essence of contradictory
-X-Cycles is to hypothesize a particular digit in a given cell, then test the ramifications. When a
-contradiction is reached, the intitial hypothesis is found to be false. Thusly, I would call this a
-guessing technique. Same goes for my KeyCell method above.
+Most experts consider X-Cycles a valid solution technique. But the essence of contradictory X-Cycles is to hypothesize a particular digit in a given cell, then test the ramifications. When a contradiction is reached, the intitial hypothesis is found to be false. Thusly, I would call this a guessing technique. Same goes for my KeyCell method above.
 
 This is why guessing techniques may be acceptable to some.
 
 Per convention, I call a puzzle "valid" if it has only one solution.
 
-That said, I have collected 3 [valid] puzzles, so far, that reside in the directory ~/puzzles/impossible/ 
-that refuse to be solved using KeyCell alone, without some sort of guessing. And here is a solution methodology for this type:
+That said, I have collected 3 [valid] puzzles, so far, that reside in the directory ~/puzzles/impossible/ that refuse to be solved using KeyCell alone, without some sort of guessing. And here is a solution methodology for this type:
 
 * choose a cell with a small number of candidates. One works, and the others will eventually fail.
 
@@ -529,21 +482,12 @@ EG: overlay #1 helps to solve ~/puzzles/extreme/setWheel.txt without resorting t
 
 ### Method for defining custom overlays:
 
-Newly added, custom-designed overlays are now possible using the O-key/o-key...
-Use the upper-case "O" key initiate definition of blue-rows in the set using digits 1..9.
-Type a zero to end defining rows and proceed to defining columns the same way, ending with a zero.
-Then, the lower-case "o" will toggle the display of the 2 colored sets MINUS their intersection.
-Note that if the number of rows and columns differ, then the 2 sets differ by some multiple
-of the set {1..9}.
+Newly added, custom-designed overlays are now possible using the O-key/o-key...Use the upper-case "O" key initiate definition of blue-rows in the set using digits 1..9. Type a zero to end defining rows and proceed to defining columns the same way, ending with a zero. Then, the lower-case "o" will toggle the display of the 2 colored sets MINUS their intersection. Note that if the number of rows and columns differ, then the 2 sets differ by some multiple of the set {1..9}.
 
 EG: predefined overlay #1 could be approximated by the key sequence:
 O  14569023780
 
-where, in this case, the central blue box needs to be omitted before the pink and blue sets match,
-because there are 5 rows but only 4 columns.
-You can use the (equal)-key to "subtract" each of the 9 cells in the central box.
-(if you accidently delete the wrong cell, restore it with [plus]=UpperCaseEqual key)
-At this point, the pink & blue sets contain the same digits.
+where, in this case, the central blue box needs to be omitted before the pink and blue sets match, because there are 5 rows but only 4 columns. You can use the (equal)-key to "subtract" each of the 9 cells in the central box. (if you accidently delete the wrong cell, restore it with [plus]=UpperCaseEqual key) At this point, the pink & blue sets contain the same digits.
 
 Summary:
 
@@ -570,10 +514,7 @@ Summary:
 ------------------------------------------------------
 #### linux users note
 
-Before attempting to build these apps on linux 
-you might need to update your libraries to include
-	xorg-dev, & libx11-dev,
-so that the link-step succeeds.
+Before attempting to build these apps on linux you might need to update your libraries to include 	xorg-dev, & libx11-dev, so that the link-step succeeds.
 
 Use the following commands:
 
@@ -599,8 +540,7 @@ If you still want to rebuild, install Ada, then execute the following scripts:
 * osx =>
 	* ocmp.sh
 
-Note that these scripts might need to be adjusted to reference 
-your actual installation directory for the 64bit GNU Ada compiler.
+Note that these scripts might need to be adjusted to reference your actual installation directory for the 64bit GNU Ada compiler.
 
 -------------------------------------------------------
 
@@ -844,8 +784,6 @@ that makes easy puzzles much more fun.
 * Initial release.
 
 
-
-**ver 1.0.0 -- 25may2023**
 * Initial release.
 
 
